@@ -16,7 +16,7 @@ import os
 def main(args):
     for path, dirs, files in os.walk(args[1]):
         for file in files:
-            if path.find(".svn") == -1 and path.find(".git") == -1:
+            if not ".svn" in path and not ".git" in path:
                 trimWhitespace(addTrailingSlash(path) + file)
             else:
                 print "excluding " + addTrailingSlash(path) + file # DEBUG
