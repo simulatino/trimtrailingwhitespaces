@@ -26,7 +26,7 @@ def trimWhitespace(filepath):
     for line in open(filepath, "r"):
         lines.append(line.rstrip())
     f = open(filepath, "w")
-    f.write("\n".join(lines))
+    f.write("\n".join(lines) + "\n")
 
 def addTrailingSlash(path):
     if path[-1] != os.sep:
