@@ -6,9 +6,6 @@ excluded.
 
 Usage: 	python trimAllWhitespace.py <DestinationDir>
 """
-__version__ = "$Revision: $"
-__date__ = "$Date: $"
-__license__ = "Modelica"
 
 import sys
 import os
