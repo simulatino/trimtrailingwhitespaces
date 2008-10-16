@@ -1,14 +1,16 @@
 #!/usr/bin/env python
+"""
+	This binary tester uses the python magic implentation from
+	Adam Hupp, http://hupp.org/adam/hg/python-magic
+"""
 
 import string, sys, magic, textwrap
 
-# you need python bindings for magic installed in oder to run this
-ms = magic.open(magic.MAGIC_MIME)
-ms.load()
+mime = magic.Magic(mime=True)
 
 # detect the mime type of the text file
 def detecttype(filename):
-	type = ms.file(filename)
+	type = mime.from_file(filename)
 	if "text/" in type:
 		return "text"
 	else:
