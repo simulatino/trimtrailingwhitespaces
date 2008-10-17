@@ -4,7 +4,7 @@
 	Adam Hupp, http://hupp.org/adam/hg/python-magic
 """
 
-import string, sys, magic, textwrap
+import os, sys, magic, textwrap
 
 mime = magic.Magic(mime=True)
 
@@ -43,7 +43,7 @@ def unkownOption(argv):
 	print textwrap.dedent(warning)
 
 def main(argv):
-	import os, getopt
+	import getopt
 	# look for optional arguments
 	try:
 		opts, dirnames = getopt.getopt(argv[1:], "h", ["help"])
