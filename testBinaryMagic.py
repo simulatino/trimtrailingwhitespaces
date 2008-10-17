@@ -51,7 +51,6 @@ def main(argv):
 	except getopt.GetoptError:
 		unkownOption(argv)
 		sys.exit(0)
-	table = {0: "binary", 1: "text"}
 	for o, a in opts:
 		if o == "-h" or "--help":
 			usage(argv)
