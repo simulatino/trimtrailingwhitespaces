@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-	This binary tester uses the python magic implentation from
+	This binary tester uses the python magic implementation from
 	Adam Hupp, http://hupp.org/adam/hg/python-magic
 """
 
