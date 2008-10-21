@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""
-	Trimming of trailing white spaces
+"""Trimming of trailing white spaces.
 
 This script will recursively remove all trailing white spaces in all
 text files in a given directory. Binary files and files residing in
@@ -11,12 +10,16 @@ It uses a binary tester based on the python magic implementation from
 
 """
 
-import os, sys, magic, textwrap
+import os
+import sys
+import textwrap
+
+import magic
 
 mime = magic.Magic(mime=True)
 
-# help message on usage
 def usage(args):
+	"""Help message on usage."""
 	message = """
 		Usage: python %s [OPTIONS] <directory>
 
@@ -30,8 +33,8 @@ def usage(args):
 		""" % (args[0],)
 	print textwrap.dedent(message)
 
-# warning message for unkown options
 def unkownOption(args):
+	"""Warning message for unkown options."""
 	warning = """
 		UNKNOWN OPTION: "%s"
 
@@ -39,8 +42,8 @@ def unkownOption(args):
 		""" % (args[1],args[0],)
 	print textwrap.dedent(warning)
 
-# detect the mime type of the text file
 def detecttype(filepath):
+	"""Detect the mime type of the text file."""
 	type = mime.from_file(filepath)
 	if "text/" in type:
 		return "text"
@@ -49,15 +52,15 @@ def detecttype(filepath):
 
 def main(args):
 	import getopt
-	# look for optional arguments
+	# Look for optional arguments:
 	try:
 		opts, dirnames = getopt.getopt(args[1:], "h", ["help"])
-	# unkown option is given trigger the display message
+	# Unkown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(args)
 		sys.exit(0)
 
-	# if help option is given display help otherwise display warning
+	# If help option is given display help otherwise display warning:
 	for o, a in opts:
 		if o == "-h" or "--help":
 			usage(args)
@@ -66,21 +69,21 @@ def main(args):
 			unkownOption(args)
 			sys.exit(0)
 
-	# walk through the given path and call trim function for text files only
+	# Walk through the given path and call trim function for text files only:
 	for path, dirs, files in os.walk(args[1]):
 		for file in files:
 			filepath = os.path.join(path, file)
 			filetype=detecttype(filepath)
 			if ".svn" in path or ".git" in path:
-				print "skipping version control file: " + filepath
+				print "skipping version control file: "+filepath
 			elif filetype=="text":
 				print "trimming " + filepath
 				trimWhitespace(filepath)
 			else:
-				print "skipping binary file of type " +filetype + ": "+ filepath
+				print "skipping binary file of type "+filetype+": "+filepath
 
-# trim trailing white spaces from a given filepath
 def trimWhitespace(filepath):
+	"""Trim trailing white spaces from a given filepath."""
 	lines = []
 	for line in open(filepath, "r"):
 		lines.append(line.rstrip())
