@@ -1,23 +1,29 @@
 #!/usr/bin/env python
-"""
-	This binary tester uses the python magic implementation from
-	Adam Hupp, http://hupp.org/adam/hg/python-magic
+"""Test script that displayes the type of a file.
+
+This binary tester uses the python magic implementation from
+Adam Hupp, http://hupp.org/adam/hg/python-magic
+
 """
 
-import os, sys, magic, textwrap
+import os
+import sys
+import textwrap
+
+import magic
 
 mime = magic.Magic(mime=True)
 
-# detect the mime type of the text file
 def detecttype(filename):
+	"""Detect the mime type of the file"""
 	type = mime.from_file(filename)
 	if "text/" in type:
 		return "text"
 	else:
 		return type
 
-# help message on usage
 def usage(argv):
+	"""Help message on usage."""
 	message = """
 		Usage: %s [OPTIONS] <directory> [<directory> ...]
 
@@ -35,6 +41,7 @@ def usage(argv):
 
 # warning message for unkown options
 def unkownOption(argv):
+	"""Warning message for unkown options."""
 	warning = """
 		UNKNOWN OPTION: "%s"
 
@@ -44,10 +51,10 @@ def unkownOption(argv):
 
 def main(argv):
 	import getopt
-	# look for optional arguments
+	# Look for optional arguments:
 	try:
 		opts, dirnames = getopt.getopt(argv[1:], "h", ["help"])
-	# unkown option is given trigger the display message
+	# Unkown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(argv)
 		sys.exit(0)
@@ -58,17 +65,17 @@ def main(argv):
 		else:
 			unkownOption(argv)
 			sys.exit(0)
-	# default directory
+	# Default directory:
 	if not dirnames:
 		dirnames = ["."]
-	# walk recursively through the given directories
+	# Walk recursively through the given directories:
 	for dirname in dirnames:
 		for path, dirs, files in os.walk(dirname):
 			for file in files:
 				fullname = os.path.join(path, file)
 				try:
 					print detecttype(fullname),":", repr(fullname)[1: - 1]
-				except IOError:  # eg, this is a directory
+				except IOError:
 					pass
 
 if __name__ == "__main__":
