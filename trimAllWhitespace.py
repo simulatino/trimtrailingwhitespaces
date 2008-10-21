@@ -71,7 +71,9 @@ def main(args):
 		for file in files:
 			filepath = os.path.join(path, file)
 			filetype=detecttype(filepath)
-			if not ".svn" in path and not ".git" in path and filetype=="text":
+			if ".svn" in path or ".git" in path:
+				print "skipping version control file: " + filepath
+			elif filetype=="text":
 				print "trimming " + filepath
 				trimWhitespace(filepath)
 			else:
