@@ -14,9 +14,9 @@ import os
 import sys
 import textwrap
 
-import magic
-
-mime = magic.Magic(mime=True)
+# For Windows: list of file extensions to apply the script on
+# (separated by a comma)
+listofexts = ".mo,.mos,.c,.h,.cpp,.txt"
 
 def usage(args):
 	"""Help message on usage."""
@@ -44,11 +44,22 @@ def unkownOption(args):
 
 def detecttype(filepath):
 	"""Detect the mime type of the text file."""
-	type = mime.from_file(filepath)
-	if "text/" in type:
-		return "text"
-	else:
-		return type
+	try:
+		import magic
+		mime = magic.Magic(mime=True)
+		type = mime.from_file(filepath)
+		if "text/" in type:
+			return "text"
+		else:
+			return type
+	except ImportError:
+		root, ext = os.path.splitext(filepath)
+		if ext in listofexts.split(","):
+			return "text"
+		else:
+			print listofexts
+			print listofexts.split(",")
+			return "unknown"
 
 def main(args):
 	import getopt
@@ -62,7 +73,7 @@ def main(args):
 
 	# If help option is given display help otherwise display warning:
 	for o, a in opts:
-		if o == "-h" or "--help":
+		if o is "-h" or "--help":
 			usage(args)
 			sys.exit(0)
 		else:
@@ -73,14 +84,14 @@ def main(args):
 	for path, dirs, files in os.walk(args[1]):
 		for file in files:
 			filepath = os.path.join(path, file)
-			filetype=detecttype(filepath)
+			filetype = detecttype(filepath)
 			if ".svn" in path or ".git" in path:
 				print "skipping version control file: "+filepath
-			elif filetype=="text":
+			elif filetype is "text":
 				print "trimming " + filepath
 				trimWhitespace(filepath)
 			else:
-				print "skipping binary file of type "+filetype+": "+filepath
+				print "skipping file of type "+filetype+": "+filepath
 
 def trimWhitespace(filepath):
 	"""Trim trailing white spaces from a given filepath."""
