@@ -16,7 +16,8 @@ import textwrap
 
 # For Windows: list of file extensions to apply the script on
 # (separated by a comma)
-listofexts = ".mo,.mos,.c,.h,.cpp,.txt"
+extstring = ".mo,.mos,.c,.h,.cpp,.txt"
+listofexts  = extstring.split(",")
 
 def usage(args):
 	"""Help message on usage."""
@@ -54,11 +55,9 @@ def detecttype(filepath):
 			return type
 	except ImportError:
 		root, ext = os.path.splitext(filepath)
-		if ext in listofexts.split(","):
+		if ext in listofexts:
 			return "text"
 		else:
-			print listofexts
-			print listofexts.split(",")
 			return "unknown"
 
 def main(args):
@@ -69,6 +68,10 @@ def main(args):
 	# Unkown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(args)
+		sys.exit(0)
+	# if no dir name is given print the usage message
+	if not dirnames:
+		usage(args)
 		sys.exit(0)
 
 	# If help option is given display help otherwise display warning:
