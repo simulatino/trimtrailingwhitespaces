@@ -8,6 +8,9 @@ text files in a given directory. Binary files and files residing in
 It uses a binary tester based on the python magic implementation from
 	Adam Hupp, http://hupp.org/adam/hg/python-magic
 
+As a fallback (especially if libmagic is not available, like on Windows)
+it acts only on files with a given file extension listed in 'extstring'.
+
 """
 
 import os
@@ -15,8 +18,9 @@ import sys
 import textwrap
 
 # For Windows: list of file extensions to apply the script on
-# (separated by a comma)
+# (including the dot and separated by a comma)
 extstring = ".mo,.mos,.c,.h,.cpp,.txt"
+# convert the string object to a list object
 listofexts  = extstring.split(",")
 
 def usage(args):
@@ -28,14 +32,18 @@ def usage(args):
 		 text files in a given directory. Binary files and files residing in
 		 '.svn' or '.git' directories are skipped.
 
+		Note for Windows users:
+		 If you have not libmagic installed the script will fallback to only
+		 trim files with the following extensions: %s
+
 		Options:
 			-h, --help
 				displays this help message
-		""" % (args[0],)
+		""" % (args[0],extstring,)
 	print textwrap.dedent(message)
 
 def unkownOption(args):
-	"""Warning message for unkown options."""
+	"""Warning message for unknown options."""
 	warning = """
 		UNKNOWN OPTION: "%s"
 
@@ -65,7 +73,7 @@ def main(args):
 	# Look for optional arguments:
 	try:
 		opts, dirnames = getopt.getopt(args[1:], "h", ["help"])
-	# Unkown option is given trigger the display message:
+	# Unknown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(args)
 		sys.exit(0)
