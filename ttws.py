@@ -26,7 +26,7 @@ listofexts  = extstring.split(",")
 def usage(args):
 	"""Help message on usage."""
 	message = """
-		Usage: python %s [OPTIONS] <directory>
+		Usage: %s [OPTIONS] <directory>
 
 		 This script will recursively remove all trailing white spaces in all
 		 text files in a given directory. Binary files and files residing in
@@ -39,7 +39,7 @@ def usage(args):
 		Options:
 			-h, --help
 				displays this help message
-		""" % (args[0],extstring,)
+		""" % (os.path.split(args[0])[1],extstring,)
 	print textwrap.dedent(message)
 
 def unkownOption(args):
@@ -83,8 +83,8 @@ def main(args):
 		sys.exit(0)
 
 	# If help option is given display help otherwise display warning:
-	for o, a in opts:
-		if o is "-h" or "--help":
+	for opt, arg in opts:
+		if opt in ("-h","--help"):
 			usage(args)
 			sys.exit(0)
 		else:
