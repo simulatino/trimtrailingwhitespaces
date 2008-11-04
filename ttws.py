@@ -61,7 +61,7 @@ def detecttype(filepath):
 			return "text"
 		else:
 			return type
-	except ImportError:
+	except (ImportError, TypeError):
 		root, ext = os.path.splitext(filepath)
 		if ext in listofexts:
 			return "text"
