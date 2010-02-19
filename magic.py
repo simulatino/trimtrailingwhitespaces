@@ -1,7 +1,7 @@
 """
 magic is a wrapper around the libmagic file identification library.
 
-See README for more information.
+See README on http://hupp.org/adam/hg/python-magic/ for more information.
 
 Usage:
 
