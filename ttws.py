@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 """Trimming of trailing white spaces.
 
+Author-email: "Dietmar Winkler" <dietmarw at gmx de>
+
+License: See UNLICENSE file
+
 This script will recursively remove all trailing white spaces in all
 text files in a given directory. Binary files and files residing in
 '.svn' or '.git' directories are skipped.

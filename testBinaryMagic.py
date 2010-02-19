@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 """Test script that displayes the type of a file.
 
+Author-email: "Dietmar Winkler" <dietmarw at gmx de>
+
+License: See UNLICENSE file
+
 This binary tester uses the python magic implementation from
 Adam Hupp, http://hupp.org/adam/hg/python-magic
 
