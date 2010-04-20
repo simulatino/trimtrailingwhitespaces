@@ -24,6 +24,10 @@ import textwrap
 # For Windows: list of file extensions to apply the script on
 # (including the dot and separated by a comma)
 extstring = ".mo,.mos,.c,.h,.cpp,.txt"
+
+# list of version control directories to ignore
+BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn']
+
 # convert the string object to a list object
 listofexts  = extstring.split(",")
 
@@ -100,14 +104,23 @@ def main(args):
 		for file in files:
 			filepath = os.path.join(path, file)
 			filetype = detecttype(filepath)
-			EXCLUDES = ['.cvs', '.svn', '.git', '.hg', '.bzr']
-			if [dirname in EXCLUDES for dirname in path.split(os.sep)]:
+			print blacklisted(path) # XXX:Debug
+			if blacklisted(path):
 				print "skipping version control file: "+filepath
 			elif filetype is "text":
 				print "trimming " + filepath
 				trimWhitespace(filepath)
 			else:
 				print "skipping file of type "+filetype+": "+filepath
+
+def blacklisted(path):
+	"""
+	determines whether the given path contains a blacklisted directory
+	"""
+	for dirname in path.split(os.sep):
+		if dirname in BLACKLIST:
+			return True
+		return False
 
 def trimWhitespace(filepath):
 	"""Trim trailing white spaces from a given filepath."""
