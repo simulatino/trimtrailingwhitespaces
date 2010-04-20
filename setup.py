@@ -19,7 +19,5 @@ setup(
     description = 'Script to remove trailing whitespaces from textfiles.',
     author = 'Dietmar Winkler',
     author_email = 'http://claimid/dietmarw',
-    platforms = 'Posix; MacOS X; Windows',
-    packages = find_packages(exclude=['test']),
-    include_package_data = True
+    platforms = 'Posix; MacOS X; Windows'
     )
