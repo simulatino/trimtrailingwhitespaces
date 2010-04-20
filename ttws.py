@@ -100,7 +100,8 @@ def main(args):
 		for file in files:
 			filepath = os.path.join(path, file)
 			filetype = detecttype(filepath)
-			if ".svn" in path or ".git" in path:
+			EXCLUDES = ['.cvs', '.svn', '.git', '.hg', '.bzr']
+			if [dirname in EXCLUDES for dirname in path.split(os.sep)]:
 				print "skipping version control file: "+filepath
 			elif filetype is "text":
 				print "trimming " + filepath
