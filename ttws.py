@@ -104,7 +104,6 @@ def main(args):
 		for file in files:
 			filepath = os.path.join(path, file)
 			filetype = detecttype(filepath)
-			print blacklisted(path) # XXX:Debug
 			if blacklisted(path):
 				print "skipping version control file: "+filepath
 			elif filetype is "text":
@@ -112,7 +111,6 @@ def main(args):
 				trimWhitespace(filepath)
 			else:
 				print "skipping file of type "+filetype+": "+filepath
-
 def blacklisted(path):
 	"""
 	determines whether the given path contains a blacklisted directory
@@ -120,7 +118,7 @@ def blacklisted(path):
 	for dirname in path.split(os.sep):
 		if dirname in BLACKLIST:
 			return True
-		return False
+	return False
 
 def trimWhitespace(filepath):
 	"""Trim trailing white spaces from a given filepath."""
