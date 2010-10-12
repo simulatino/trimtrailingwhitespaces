@@ -38,7 +38,7 @@ def usage(args):
 
 		 This script will recursively remove all trailing white spaces in all
 		 text files in a given directory. Binary files and files residing in
-		 '.svn' or '.git' directories are skipped.
+		 '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
 		Note for Windows users:
 		 If you have not libmagic installed the script will fallback to only
