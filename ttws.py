@@ -47,6 +47,11 @@ def usage(args):
 		Options:
 			-h, --help
 				displays this help message
+
+			-c, --clean
+			        removes obsolete or superfluous annotation constructs
+				from Modelica files.
+				WARNING: USE THIS OPTION AT YOUR OWN RISK!
 		""" % (os.path.split(args[0])[1],extstring,)
 	print textwrap.dedent(message)
 
@@ -65,13 +70,18 @@ def detecttype(filepath):
 		import magic
 		mime = magic.Magic(mime=True)
 		type = mime.from_file(filepath)
-		if "text/" in type:
+		root, ext = os.path.splitext(filepath)
+		if ext in '.mo':
+			return "mo"
+		elif "text/" in type:
 			return "text"
 		else:
 			return type
 	except (ImportError, TypeError):
 		root, ext = os.path.splitext(filepath)
-		if ext in listofexts:
+		if ext in '.mo':
+			return "mo"
+		elif ext in listofexts:
 			return "text"
 		else:
 			return "unknown"
@@ -80,7 +90,7 @@ def main(args):
 	import getopt
 	# Look for optional arguments:
 	try:
-		opts, dirnames = getopt.getopt(args[1:], "h", ["help"])
+		opts, dirnames = getopt.getopt(args[1:], "hc", ["help","clean"])
 	# Unknown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(args)
@@ -91,10 +101,15 @@ def main(args):
 		sys.exit(0)
 
 	# If help option is given display help otherwise display warning:
+	cleanOpt = False
 	for opt, arg in opts:
 		if opt in ("-h","--help"):
 			usage(args)
 			sys.exit(0)
+		elif opt in ("-c","--clean"):
+			cleanOpt = True
+			print cleanOpt #FIXME output for debugging
+#			sys.exit(0)
 		else:
 			unkownOption(args)
 			sys.exit(0)
@@ -106,7 +121,11 @@ def main(args):
 			filetype = detecttype(filepath)
 			if blacklisted(path):
 				print "skipping version control file: "+filepath
-			elif filetype is "text":
+			elif filetype is "mo" and cleanOpt is True:
+				print "trimming and cleaning" + filepath
+				trimWhitespace(filepath)
+				cleanAnnotation(filepath)
+			elif filetype is "mo" or "text":
 				print "trimming " + filepath
 				trimWhitespace(filepath)
 			else:
@@ -128,6 +147,16 @@ def trimWhitespace(filepath):
 	f = open(filepath, "w")
 	f.write("\n".join(lines) + "\n")
 	f.close
+
+def cleanAnnotation(filepath):
+	"""Clean out the obsolete or superflous annotations."""
+	with open(filepath, 'r') as mo_file:
+		string = mo_file.read()
+		# for now we only remove 'Window()' annotations:
+		WindowRef = ZeroOrMore(White(' \t')) + Keyword('Window') + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
+		out = Suppress(WindowRef).transformString(string)
+	with open(filepath,'w') as mo_file:
+		mo_file.write(out)
 
 if __name__ == "__main__":
 	sys.exit(main(sys.argv))
