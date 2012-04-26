@@ -1,11 +1,13 @@
 * Trimming of trailing white spaces.
 
-** Author-email: "Dietmar Winkler" <dietmar.winkler@dwe.no>
+** Author
+"Dietmar Winkler" <dietmar.winkler@dwe.no>
 
-** License: See =UNLICENSE= file
+** License
+See =UNLICENSE= file
 
-** Project page:
-   https://github.com/dietmarw/trimtrailingwhitespaces
+** Project page
+https://github.com/dietmarw/trimtrailingwhitespaces
 
 ** About
 This script will recursively remove all trailing white spaces in all
