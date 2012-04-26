@@ -7,7 +7,10 @@ License: See UNLICENSE file
 
 This script will recursively remove all trailing white spaces in all
 text files in a given directory. Binary files and files residing in
-'.svn' or '.git' directories are skipped.
+version control specific directories are skipped.
+
+As an addition one can also let it clean out obsolete or empty/superfluous
+annotations.
 
 It uses a binary tester based on the python magic implementation from
 	Adam Hupp, http://hupp.org/adam/hg/python-magic
@@ -65,6 +68,13 @@ def unkownOption(args):
 		""" % (args[1],args[0],)
 	print textwrap.dedent(warning)
 
+def unkownDirectory(args):
+	"""Warning message for unknown Directory."""
+	warning = """
+	        WARNING: Ignoring unkown directory: "%s"
+		""" % (args)
+	print textwrap.dedent(warning)
+
 def detecttype(filepath):
 	"""Detect the mime type of the text file."""
 	try:
@@ -109,28 +119,31 @@ def main(args):
 			sys.exit(0)
 		elif opt in ("-c","--clean"):
 			cleanOpt = True
-			print cleanOpt #FIXME output for debugging
-#			sys.exit(0)
 		else:
 			unkownOption(args)
 			sys.exit(0)
 
 	# Walk through the given path and call trim function for text files only:
-	for path, dirs, files in os.walk(args[1]):
-		for file in files:
-			filepath = os.path.join(path, file)
-			filetype = detecttype(filepath)
-			if blacklisted(path):
-				print "skipping version control file: "+filepath
-			elif filetype is "mo" and cleanOpt is True:
-				print "trimming and cleaning" + filepath
-				trimWhitespace(filepath)
-				cleanAnnotation(filepath)
-			elif filetype is "mo" or "text":
-				print "trimming " + filepath
-				trimWhitespace(filepath)
-			else:
-				print "skipping file of type "+filetype+": "+filepath
+	for dirname in dirnames:
+		if os.path.exists(dirname) is False:
+			# Warn about an unknown directory
+			unkownDirectory(dirname)
+		else:
+			for path, dirs, files in os.walk(dirname):
+				for file in files:
+					filepath = os.path.join(path, file)
+					filetype = detecttype(filepath)
+					if blacklisted(path):
+						print "skipping version control file: "+filepath
+					elif filetype is "mo" and cleanOpt is True:
+						print "trimming and cleaning" + filepath
+						trimWhitespace(filepath)
+						cleanAnnotation(filepath)
+					elif filetype is "mo" or "text":
+						print "trimming " + filepath
+						trimWhitespace(filepath)
+					else:
+						print "skipping file of type "+filetype+": "+filepath
 def blacklisted(path):
 	"""
 	determines whether the given path contains a blacklisted directory
