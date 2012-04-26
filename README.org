@@ -1,0 +1,22 @@
+* Trimming of trailing white spaces.
+
+** Author-email: "Dietmar Winkler" <dietmar.winkler@dwe.no>
+
+** License: See =UNLICENSE= file
+
+** Project page:
+   https://github.com/dietmarw/trimtrailingwhitespaces
+
+** About
+This script will recursively remove all trailing white spaces in all
+text files in a given directory. Binary files and files residing in
+version control specific directories are skipped.
+
+As an addition one can also let it clean out obsolete or empty/superfluous
+Modelica /annotations/ from [[https://modelica.org][Modelica]] (=*.mo=) files.
+
+It uses a binary tester based on the python magic implementation from
+	Adam Hupp, http://hupp.org/adam/hg/python-magic
+
+As a fallback (especially if libmagic is not available, like on Windows)
+it acts only on files with a given file extension listed in 'extstring'.

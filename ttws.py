@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Trimming of trailing white spaces.
 
-Author-email: "Dietmar Winkler" <dietmarw at gmx de>
+Author-email: "Dietmar Winkler" <dietmar.winkler@dwe.no>
 
 License: See UNLICENSE file
 
@@ -10,7 +10,7 @@ text files in a given directory. Binary files and files residing in
 version control specific directories are skipped.
 
 As an addition one can also let it clean out obsolete or empty/superfluous
-annotations.
+Modelica annotations from Modelica (`*.mo`) files.
 
 It uses a binary tester based on the python magic implementation from
 	Adam Hupp, http://hupp.org/adam/hg/python-magic
