@@ -139,7 +139,7 @@ def main(args):
 						print "trimming and cleaning " + filepath
 						trimWhitespace(filepath)
 						cleanAnnotation(filepath)
-					elif filetype is "mo" or "text":
+					elif filetype is "mo" or filetype is "text":
 						print "trimming " + filepath
 						trimWhitespace(filepath)
 					else:
@@ -166,9 +166,12 @@ def cleanAnnotation(filepath):
 	"""Clean out the obsolete or superflous annotations."""
 	with open(filepath, 'r') as mo_file:
 		string = mo_file.read()
-		# remove 'Window()' annotations:
-		WindowRef = ZeroOrMore(White(' \t')) + Keyword('Window') + nestedExpr() + Optional(',') + ZeroOrMore(White(' \t') + lineEnd)
+		# remove 'Window(),' and 'Coordsys()' annotations:
+		WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(WindowRef).transformString(string)
+		# special care needs to be taken if the annotation is the last one
+		WindowLastRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ZeroOrMore(White(' \t') + lineEnd)
+		out = Suppress(WindowLastRef).transformString(out)
 		# in case we end up with empty annotations remove them too
 		AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(AnnotationRef).transformString(out)
