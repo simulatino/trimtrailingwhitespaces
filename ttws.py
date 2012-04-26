@@ -20,7 +20,7 @@ it acts only on files with a given file extension listed in 'extstring'.
 
 """
 from __future__ import with_statement
-from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore
+from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional
 import os
 import sys
 import textwrap
@@ -38,10 +38,10 @@ listofexts  = extstring.split(",")
 def usage(args):
 	"""Help message on usage."""
 	message = """
-		Usage: %s [OPTIONS] <directory>
+		Usage: %s [OPTIONS] <directory> [<directory> ...]
 
 		 This script will recursively remove all trailing white spaces in all
-		 text files in a given directory. Binary files and files residing in
+		 text files in a given list directories. Binary files and files residing in
 		 '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
 		Note for Windows users:
@@ -136,7 +136,7 @@ def main(args):
 					if blacklisted(path):
 						print "skipping version control file: "+filepath
 					elif filetype is "mo" and cleanOpt is True:
-						print "trimming and cleaning" + filepath
+						print "trimming and cleaning " + filepath
 						trimWhitespace(filepath)
 						cleanAnnotation(filepath)
 					elif filetype is "mo" or "text":
@@ -166,9 +166,12 @@ def cleanAnnotation(filepath):
 	"""Clean out the obsolete or superflous annotations."""
 	with open(filepath, 'r') as mo_file:
 		string = mo_file.read()
-		# for now we only remove 'Window()' annotations:
-		WindowRef = ZeroOrMore(White(' \t')) + Keyword('Window') + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
+		# remove 'Window()' annotations:
+		WindowRef = ZeroOrMore(White(' \t')) + Keyword('Window') + nestedExpr() + Optional(',') + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(WindowRef).transformString(string)
+		# in case we end up with empty annotations remove them too
+		AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
+		out = Suppress(AnnotationRef).transformString(out)
 	with open(filepath,'w') as mo_file:
 		mo_file.write(out)
 
