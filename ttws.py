@@ -16,7 +16,8 @@ As a fallback (especially if libmagic is not available, like on Windows)
 it acts only on files with a given file extension listed in 'extstring'.
 
 """
-
+from __future__ import with_statement
+from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore
 import os
 import sys
 import textwrap
@@ -49,9 +50,9 @@ def usage(args):
 				displays this help message
 
 			-c, --clean
-			        removes obsolete or superfluous annotation constructs
+			        WARNING: USE THIS OPTION AT YOUR OWN RISK!
+				removes obsolete or superfluous annotation constructs
 				from Modelica files.
-				WARNING: USE THIS OPTION AT YOUR OWN RISK!
 		""" % (os.path.split(args[0])[1],extstring,)
 	print textwrap.dedent(message)
 
