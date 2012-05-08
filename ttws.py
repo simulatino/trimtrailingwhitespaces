@@ -162,6 +162,15 @@ def trimWhitespace(filepath):
 	f.write("\n".join(lines) + "\n")
 	f.close
 
+def skipNonEmptyGraphics(s, loc, tokens):
+## Some useful DEBUG output
+#    print "AAA s: %s | loc: %s | tokens: %s" % (s, loc, tokens)
+#    print "BBB", tokens.args[0][-1]
+#    print "CCC", tokens.args[0][-1].endswith('graphics')
+    if not tokens.args[0][-1].endswith('graphics'):
+#        print "Skipping"
+        raise ParseException('ends with graphics defined, skipping...')
+
 def cleanAnnotation(filepath):
 	"""Clean out the obsolete or superflous annotations."""
 	with open(filepath, 'r') as mo_file:
@@ -176,6 +185,15 @@ def cleanAnnotation(filepath):
 		# remove empty '[__Dymola_]experimentSetupOutput(),' annotation:
 		expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')) + ~nestedExpr() +  ~CharsNotIn(',)')
 		out = Suppress(expRef).transformString(out)
+
+		# Remove Icon and Diagram annotations that do not contain any graphics
+		emptyRef =  ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ',' + ZeroOrMore(White(' \t') + lineEnd)
+		emptyRef.setParseAction(skipNonEmptyGraphics)
+		out = Suppress(emptyRef).transformString(out)
+		# special care for the last annotation again
+		emptyRef =   Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ZeroOrMore(White(' \t') + lineEnd)
+		emptyRef.setParseAction(skipNonEmptyGraphics)
+		out = Suppress(emptyRef).transformString(out)
 
 		# in case we end up with empty annotations remove them too
 		AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
