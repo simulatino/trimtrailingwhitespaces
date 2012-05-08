@@ -20,7 +20,7 @@ it acts only on files with a given file extension listed in 'extstring'.
 
 """
 from __future__ import with_statement
-from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional
+from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional, CharsNotIn, ParseException
 import os
 import sys
 import textwrap
@@ -172,6 +172,11 @@ def cleanAnnotation(filepath):
 		# special care needs to be taken if the annotation is the last one
 		WindowLastRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(WindowLastRef).transformString(out)
+
+		# remove empty '[__Dymola_]experimentSetupOutput(),' annotation:
+		expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')) + ~nestedExpr() +  ~CharsNotIn(',)')
+		out = Suppress(expRef).transformString(out)
+
 		# in case we end up with empty annotations remove them too
 		AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(AnnotationRef).transformString(out)
