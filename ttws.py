@@ -162,14 +162,27 @@ def trimWhitespace(filepath):
 	f.write("\n".join(lines) + "\n")
 	f.close
 
+def flatten(arg):
+      ret = []
+      for item in arg:
+            if type(item)==list:
+                  ret = ret + flatten(item)
+            elif type(item)==tuple:
+                  ret = ret + flatten(list(item))
+            else:
+                  ret.append(item)
+      return ret
+
 def skipNonEmptyGraphics(s, loc, tokens):
-## Some useful DEBUG output
-#    print "AAA s: %s | loc: %s | tokens: %s" % (s, loc, tokens)
-#    print "BBB", tokens.args[0][-1]
-#    print "CCC", tokens.args[0][-1].endswith('graphics')
-    if not tokens.args[0][-1].endswith('graphics'):
-#        print "Skipping"
-        raise ParseException('ends with graphics defined, skipping...')
+	flattened =  flatten(tokens.args[0].asList())
+#	 print flattened
+	graphicsPresent = False
+	for substring in flattened:
+		if substring.startswith('graphics'):
+			if not substring.endswith('graphics'):
+				graphicsPresent = True
+	if graphicsPresent:
+		raise ParseException('graphics defined, skipping...')
 
 def cleanAnnotation(filepath):
 	"""Clean out the obsolete or superflous annotations."""
