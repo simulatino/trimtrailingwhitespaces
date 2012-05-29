@@ -53,9 +53,10 @@ def usage(args):
 				displays this help message
 
 			-c, --clean
-			        WARNING: USE THIS OPTION AT YOUR OWN RISK!
-				removes obsolete or superfluous annotation constructs
-				from Modelica files.
+			        WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
+				Removes obsolete or superfluous annotation constructs
+				from Modelica files. Only use this if your code is under version control
+				and in combination with a caerful code-diff review.
 		""" % (os.path.split(args[0])[1],extstring,)
 	print textwrap.dedent(message)
 
@@ -196,7 +197,7 @@ def cleanAnnotation(filepath):
 		out = Suppress(WindowLastRef).transformString(out)
 
 		# remove empty '[__Dymola_]experimentSetupOutput(),' annotation:
-		expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')) + ~nestedExpr() +  ~CharsNotIn(',)')
+		expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')|Keyword('DymolaStoredErrors')|Keyword('Diagram')|Keyword('Icon')) + ~nestedExpr() +  ~CharsNotIn(',)')
 		out = Suppress(expRef).transformString(out)
 
 		# Remove Icon and Diagram annotations that do not contain any graphics
