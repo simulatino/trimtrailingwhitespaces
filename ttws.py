@@ -56,7 +56,7 @@ def usage(args):
 			        WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
 				Removes obsolete or superfluous annotation constructs
 				from Modelica files. Only use this if your code is under version control
-				and in combination with a caerful code-diff review.
+				and in combination with a careful code-diff review.
 		""" % (os.path.split(args[0])[1],extstring,)
 	print textwrap.dedent(message)
 
