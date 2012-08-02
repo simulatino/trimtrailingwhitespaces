@@ -20,7 +20,7 @@ it acts only on files with a given file extension listed in 'extstring'.
 
 """
 from __future__ import with_statement
-from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional, CharsNotIn, ParseException
+from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional, CharsNotIn, ParseException, CaselessLiteral
 import os
 import sys
 import textwrap
@@ -52,8 +52,13 @@ def usage(args):
 			-h, --help
 				displays this help message
 
+			-s, --strip
+				strips leading or trailing white spaces from info or
+				revision strings that contain HTML documentation
+				(those disturb the proper HTML rendering in 'some' tools)
+
 			-c, --clean
-			        WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
+				WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
 				Removes obsolete or superfluous annotation constructs
 				from Modelica files. Only use this if your code is under version control
 				and in combination with a careful code-diff review.
@@ -72,7 +77,7 @@ def unkownOption(args):
 def unkownDirectory(args):
 	"""Warning message for unknown Directory."""
 	warning = """
-	        WARNING: Ignoring unkown directory: "%s"
+		WARNING: Ignoring unkown directory: "%s"
 		""" % (args)
 	print textwrap.dedent(warning)
 
@@ -102,7 +107,7 @@ def main(args):
 	import getopt
 	# Look for optional arguments:
 	try:
-		opts, dirnames = getopt.getopt(args[1:], "hc", ["help","clean"])
+		opts, dirnames = getopt.getopt(args[1:], "hsc", ["help","strip","clean"])
 	# Unknown option is given trigger the display message:
 	except getopt.GetoptError:
 		unkownOption(args)
@@ -120,6 +125,8 @@ def main(args):
 			sys.exit(0)
 		elif opt in ("-c","--clean"):
 			cleanOpt = True
+		elif opt in ("-s","--strip"):
+			stripOpt = True
 		else:
 			unkownOption(args)
 			sys.exit(0)
@@ -140,6 +147,10 @@ def main(args):
 						print "trimming and cleaning " + filepath
 						trimWhitespace(filepath)
 						cleanAnnotation(filepath)
+					elif filetype is "mo" and stripOpt is True:
+						print "trimming and stripping " + filepath
+						trimWhitespace(filepath)
+						stripDocString(filepath)
 					elif filetype is "mo" or filetype is "text":
 						print "trimming " + filepath
 						trimWhitespace(filepath)
@@ -166,12 +177,12 @@ def trimWhitespace(filepath):
 def flatten(arg):
       ret = []
       for item in arg:
-            if type(item)==list:
-                  ret = ret + flatten(item)
-            elif type(item)==tuple:
-                  ret = ret + flatten(list(item))
-            else:
-                  ret.append(item)
+	    if type(item)==list:
+		  ret = ret + flatten(item)
+	    elif type(item)==tuple:
+		  ret = ret + flatten(list(item))
+	    else:
+		  ret.append(item)
       return ret
 
 def skipNonEmptyGraphics(s, loc, tokens):
@@ -212,6 +223,26 @@ def cleanAnnotation(filepath):
 		# in case we end up with empty annotations remove them too
 		AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
 		out = Suppress(AnnotationRef).transformString(out)
+	with open(filepath,'w') as mo_file:
+		mo_file.write(out)
+
+def stripDocString(filepath):
+	"""Clean out the obsolete or superflous annotations."""
+	with open(filepath, 'r') as mo_file:
+		string = mo_file.read()
+
+		# define expressions to match leading and trailing
+		# html tags, and just suppress the leading or trailing whitespace
+		opener = White().suppress() + CaselessLiteral("<html>")
+		closer = CaselessLiteral("</html>") + White().suppress()
+
+		# define a single expression to match either opener
+		# or closer - have to add leaveWhitespace() call so that
+		# we catch the leading whitespace in opener
+		either = opener|closer
+		either.leaveWhitespace()
+		out = either.transformString(string)
+
 	with open(filepath,'w') as mo_file:
 		mo_file.write(out)
 
