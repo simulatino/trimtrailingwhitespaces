@@ -119,6 +119,7 @@ def main(args):
 
 	# If help option is given display help otherwise display warning:
 	cleanOpt = False
+	stripOpt = False
 	for opt, arg in opts:
 		if opt in ("-h","--help"):
 			usage(args)
