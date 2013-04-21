@@ -1,23 +1,27 @@
-"""Setup script to generate a Windows executable.
+"""Setup script to generate an stand-alone executable.
 
-Author-email: "Dietmar Winkler" <dietmarw at gmx de>
+Author-email: "Dietmar Winkler" <dietmar.winkler@dwe.no>
 
 License: See UNLICENSE file
 
-Usage: python setup.py py2exe
+Usage: Run the build process by running the command 'python setup.py build'
+       If everything works well you should find a subdirectory in the build
+       subdirectory that contains the files needed to run the script
+       without Python
 
-Prerequisites: py2exe from www.py2exe.org
+Prerequisites: cx_Freeze
 
 """
-from distutils.core import setup
-import py2exe
+import sys
+from cx_Freeze import setup, Executable
 
 setup(
-    console=['ttws.py'],
+#   console=['ttws.py'],
     name = 'ttws',
-    version = 0.2,
+    version = 0.3,
     description = 'Script to remove trailing whitespaces from textfiles.',
     author = 'Dietmar Winkler',
     author_email = 'http://claimid/dietmarw',
-    platforms = 'Posix; MacOS X; Windows'
+    platforms = 'Posix; MacOS X; Windows',
+    executables = [Executable("ttws.py")]
     )
