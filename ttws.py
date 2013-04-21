@@ -30,7 +30,7 @@ import textwrap
 extstring = ".mo,.mos,.c,.h,.cpp,.txt"
 
 # list of version control directories to ignore
-BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn']
+BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn', '.#']
 
 # convert the string object to a list object
 listofexts  = extstring.split(",")
@@ -139,32 +139,26 @@ def main(args):
             unkownDirectory(dirname)
         else:
             for path, dirs, files in os.walk(dirname):
-                for file in files:
-                    filepath = os.path.join(path, file)
-                    filetype = detecttype(filepath)
-                    if blacklisted(path):
-                        print "skipping version control file: "+filepath
-                    elif filetype is "mo" and cleanOpt is True:
-                        print "trimming and cleaning " + filepath
-                        trimWhitespace(filepath)
-                        cleanAnnotation(filepath)
-                    elif filetype is "mo" and stripOpt is True:
-                        print "trimming and stripping " + filepath
-                        trimWhitespace(filepath)
-                        stripDocString(filepath)
-                    elif filetype is "mo" or filetype is "text":
-                        print "trimming " + filepath
-                        trimWhitespace(filepath)
-                    else:
-                        print "skipping file of type "+filetype+": "+filepath
-def blacklisted(path):
-    """
-    determines whether the given path contains a blacklisted directory
-    """
-    for dirname in path.split(os.sep):
-        if dirname in BLACKLIST:
-            return True
-    return False
+                for directory in dirs:
+                    if directory in BLACKLIST:
+                        print "skipping version control dir: %s " % directory
+                        dirs.remove(directory)
+                    for file in files:
+                        filepath = os.path.join(path, file)
+                        filetype = detecttype(filepath)
+                        if filetype is "mo" and cleanOpt is True:
+                            print "trimming and cleaning %s" % filepath
+                            trimWhitespace(filepath)
+                            cleanAnnotation(filepath)
+                        elif filetype is "mo" and stripOpt is True:
+                            print "trimming and stripping %s" % filepath
+                            trimWhitespace(filepath)
+                            stripDocString(filepath)
+                        elif filetype is "mo" or filetype is "text":
+                            print "trimming %s" % filepath
+                            trimWhitespace(filepath)
+                        else:
+                            print "skipping file of type %s: %s" % (filetype, filepath)
 
 def trimWhitespace(filepath):
     """Trim trailing white spaces from a given filepath."""
@@ -188,7 +182,6 @@ def flatten(arg):
 
 def skipNonEmptyGraphics(s, loc, tokens):
     flattened =  flatten(tokens.args[0].asList())
-#    print flattened
     graphicsPresent = False
     for substring in flattened:
         if substring.startswith('graphics'):
