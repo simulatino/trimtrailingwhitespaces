@@ -143,22 +143,22 @@ def main(args):
                     if directory in BLACKLIST:
                         print "skipping version control dir: %s " % directory
                         dirs.remove(directory)
-                    for file in files:
-                        filepath = os.path.join(path, file)
-                        filetype = detecttype(filepath)
-                        if filetype is "mo" and cleanOpt is True:
-                            print "trimming and cleaning %s" % filepath
-                            trimWhitespace(filepath)
-                            cleanAnnotation(filepath)
-                        elif filetype is "mo" and stripOpt is True:
-                            print "trimming and stripping %s" % filepath
-                            trimWhitespace(filepath)
-                            stripDocString(filepath)
-                        elif filetype is "mo" or filetype is "text":
-                            print "trimming %s" % filepath
-                            trimWhitespace(filepath)
-                        else:
-                            print "skipping file of type %s: %s" % (filetype, filepath)
+                for file in files:
+                    filepath = os.path.join(path, file)
+                    filetype = detecttype(filepath)
+                    if filetype is "mo" and cleanOpt is True:
+                        print "trimming and cleaning %s" % filepath
+                        trimWhitespace(filepath)
+                        cleanAnnotation(filepath)
+                    elif filetype is "mo" and stripOpt is True:
+                        print "trimming and stripping %s" % filepath
+                        trimWhitespace(filepath)
+                        stripDocString(filepath)
+                    elif filetype is "mo" or filetype is "text":
+                        print "trimming %s" % filepath
+                        trimWhitespace(filepath)
+                    else:
+                        print "skipping file of type %s: %s" % (filetype, filepath)
 
 def trimWhitespace(filepath):
     """Trim trailing white spaces from a given filepath."""
