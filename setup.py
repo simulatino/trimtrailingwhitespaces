@@ -23,4 +23,5 @@ setup(
     author = 'Dietmar Winkler',
     author_email = 'http://claimid/dietmarw',
     platforms = 'Posix; MacOS X; Windows',
+    entry_points = { 'console_scripts': 'ttws = ttws.__main__:main' }
     )
