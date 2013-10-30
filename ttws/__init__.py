@@ -19,11 +19,15 @@ As a fallback (especially if libmagic is not available, like on Windows)
 it acts only on files with a given file extension listed in 'extstring'.
 
 """
-from __future__ import with_statement
-from pyparsing import White, Keyword, nestedExpr, lineEnd, Suppress, ZeroOrMore, Optional, CharsNotIn, ParseException, CaselessLiteral
-import os
+from __future__ import absolute_import, with_statement
+
 import sys
+import os
 import textwrap
+
+from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
+        ZeroOrMore, Optional, CharsNotIn, ParseException, CaselessLiteral)
+
 
 # For Windows: list of file extensions to apply the script on
 # (including the dot and separated by a comma)
@@ -84,8 +88,8 @@ def unkownDirectory(args):
 def detecttype(filepath):
     """Detect the mime type of the text file."""
     try:
-        import magic
-        mime = magic.Magic(mime=True)
+        from .magic import Magic
+        mime = Magic(mime=True)
         type = mime.from_file(filepath)
         root, ext = os.path.splitext(filepath)
         if ext in '.mo':
