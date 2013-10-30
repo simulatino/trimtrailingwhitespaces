@@ -9,11 +9,11 @@ Usage: Run the build process by running the command 'python setup.py build'
        subdirectory that contains the files needed to run the script
        without Python
 
-Prerequisites: cx_Freeze
-
 """
 import sys
-from cx_Freeze import setup, Executable
+
+from setuptools import setup, find_packages
+
 
 setup(
 #   console=['ttws.py'],
@@ -23,5 +23,5 @@ setup(
     author = 'Dietmar Winkler',
     author_email = 'http://claimid/dietmarw',
     platforms = 'Posix; MacOS X; Windows',
-    executables = [Executable("ttws.py")]
+    entry_points = { 'console_scripts': 'ttws = ttws.__main__:main' }
     )
