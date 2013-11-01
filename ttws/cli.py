@@ -78,8 +78,8 @@ def usage(script_name):
          '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
         Note for Windows users:
-         If you have not libmagic installed the script will fallback to only
-         trim files with the following extensions: %s
+         If you do not have libmagic installed, the script will fall back to
+         only trim files with the following extensions: %s
 
         Options:
             -h, --help
