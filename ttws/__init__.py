@@ -38,13 +38,13 @@ BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn', '.#']
 # convert the string object to a list object
 listofexts  = extstring.split(",")
 
-def unkownOption(args):
+def unkownOption(script_name, args):
     """Warning message for unknown options."""
     warning = """
         UNKNOWN OPTION: "%s"
 
         Use %s -h [--help] for usage instructions.
-        """ % (args[1],args[0],)
+        """ % (args,script_name,)
     print textwrap.dedent(warning)
 
 def unkownDirectory(args):

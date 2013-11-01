@@ -5,10 +5,16 @@ import getopt
 from . import extstring, textwrap
 
 
-def main(args):
+def main(args=None):
+    if args is None:
+        args = sys.argv
+
+    script_name = args.pop(0)
+    script_name = os.path.split(script_name)[1]
+
     # Look for optional arguments:
     try:
-        opts, dirnames = getopt.getopt(args[1:], "hsc", ["help","strip","clean"])
+        opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean"])
     # Unknown option is given trigger the display message:
     except getopt.GetoptError:
         unkownOption(args)
@@ -62,7 +68,7 @@ def main(args):
                         print "skipping file of type %s: %s" % (filetype, filepath)
 
 
-def usage(args):
+def usage(script_name):
     """Help message on usage."""
     message = """
         Usage: %s [OPTIONS] <directory> [<directory> ...]
@@ -89,9 +95,9 @@ def usage(args):
                 Removes obsolete or superfluous annotation constructs
                 from Modelica files. Only use this if your code is under version control
                 and in combination with a careful code-diff review.
-        """ % (os.path.split(args[0])[1],extstring,)
+        """ % (script_name,extstring,)
     print textwrap.dedent(message)
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())
