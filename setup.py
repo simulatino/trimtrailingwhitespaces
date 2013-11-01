@@ -33,7 +33,7 @@ META = {
     'author_email': 'http://claimid/dietmarw',
     'packages': find_packages(exclude=['test']),
     'entry_points': {
-        'console_scripts': 'ttws = ttws.__main__:main'
+        'console_scripts': 'ttws = ttws.cli:main'
     },
     'platforms': 'Posix; MacOS X; Windows',
     'include_package_data': False,
