@@ -10,18 +10,40 @@ Usage: Run the build process by running the command 'python setup.py build'
        without Python
 
 """
-import sys
 
 from setuptools import setup, find_packages
 
 
-setup(
-#   console=['ttws.py'],
-    name = 'ttws',
-    version = 0.3,
-    description = 'Script to remove trailing whitespaces from textfiles.',
-    author = 'Dietmar Winkler',
-    author_email = 'http://claimid/dietmarw',
-    platforms = 'Posix; MacOS X; Windows',
-    entry_points = { 'console_scripts': 'ttws = ttws.__main__:main' }
-    )
+CLASSIFIERS = """
+Environment :: Console
+Intended Audience :: Developers
+Operating System :: OS Independent
+Programming Language :: Python :: 2
+""".strip().splitlines()
+
+META = {
+    'name': 'ttws',
+    'url': 'https://github.com/dietmarw/trimtrailingwhitespaces',
+    'version': '0.3',
+    'description': 'WSGI middleware to handle HTTP responses using exceptions',
+    'description': 'Script to remove trailing whitespaces from textfiles.',
+    'classifiers': CLASSIFIERS,
+    'license': 'UNLICENSE',
+    'author': 'Dietmar Winkler',
+    'author_email': 'http://claimid/dietmarw',
+    'packages': find_packages(exclude=['test']),
+    'entry_points': {
+        'console_scripts': 'ttws = ttws.cli:main'
+    },
+    'platforms': 'Posix; MacOS X; Windows',
+    'include_package_data': False,
+    'zip_safe': False,
+    'install_requires': ['pyparsing'],
+    'extras_require': {
+        'testing': ['pytest']
+    }
+}
+
+
+if __name__ == '__main__':
+    setup(**META)
