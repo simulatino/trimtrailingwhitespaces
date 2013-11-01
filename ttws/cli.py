@@ -2,7 +2,7 @@ import sys
 import os
 import getopt
 
-from . import extstring, textwrap
+from . import extstring, textwrap, detecttype
 
 
 def main(args=None):
