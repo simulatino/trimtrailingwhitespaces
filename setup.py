@@ -25,7 +25,6 @@ META = {
     'name': 'ttws',
     'url': 'https://github.com/dietmarw/trimtrailingwhitespaces',
     'version': '0.3',
-    'description': 'WSGI middleware to handle HTTP responses using exceptions',
     'description': 'Script to remove trailing whitespaces from textfiles.',
     'classifiers': CLASSIFIERS,
     'license': 'UNLICENSE',
