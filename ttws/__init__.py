@@ -79,11 +79,13 @@ def detecttype(filepath):
 def trimWhitespace(filepath):
     """Trim trailing white spaces from a given filepath."""
     lines = []
-    for line in open(filepath, "r"):
-        lines.append(line.rstrip())
-    f = open(filepath, "w")
-    f.write("\n".join(lines) + "\n")
-    f.close
+    with open(filepath, "rb") as f:
+        for line in f:
+            lines.append(line.rstrip())
+    data = "\n".join(lines) + "\n"
+    newdata = data.replace("\r\n", "\n")
+    with open(filepath, "wb") as f:
+        f.write(newdata)
 
 def flatten(arg):
       ret = []
@@ -108,7 +110,7 @@ def skipNonEmptyGraphics(s, loc, tokens):
 
 def cleanAnnotation(filepath):
     """Clean out the obsolete or superflous annotations."""
-    with open(filepath, 'r') as mo_file:
+    with open(filepath, 'rb') as mo_file:
         string = mo_file.read()
         # remove 'Window(),' and 'Coordsys()' annotations:
         WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
@@ -133,12 +135,12 @@ def cleanAnnotation(filepath):
         # in case we end up with empty annotations remove them too
         AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(AnnotationRef).transformString(out)
-    with open(filepath,'w') as mo_file:
+    with open(filepath,'wb') as mo_file:
         mo_file.write(out)
 
 def stripDocString(filepath):
     """Clean out the obsolete or superflous annotations."""
-    with open(filepath, 'r') as mo_file:
+    with open(filepath, 'rb') as mo_file:
         string = mo_file.read()
 
         # define expressions to match leading and trailing
@@ -153,5 +155,5 @@ def stripDocString(filepath):
         either.leaveWhitespace()
         out = either.transformString(string)
 
-    with open(filepath,'w') as mo_file:
+    with open(filepath,'wb') as mo_file:
         mo_file.write(out)
