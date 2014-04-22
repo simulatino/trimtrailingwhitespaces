@@ -42,10 +42,17 @@ You can find the latest stable releases under the
                 revision strings that contain HTML documentation
                     (those disturb the proper HTML rendering in 'some' tools)
 
+        --eol=[CRLF|LF|CR]
+            Force the line endings to be of type:
+            - CRLF = '\r\n' Windows
+            - LF = '\n' POSIX
+            - CR = '\r' Mac
+
         -c, --clean
             WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
             Removes obsolete or superfluous annotation constructs
-            from Modelica files. Only use this if your code is under version control
+            from Modelica files.
+            Only use this if your code is under version control
             and in combination with a careful code-diff review.
 
 
