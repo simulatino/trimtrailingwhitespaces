@@ -12,7 +12,7 @@ As an addition one can also let it clean out obsolete or empty/superfluous
 Modelica /annotations/ from [Modelica](https://modelica.org) (`*.mo`) files.
 
 It uses a binary tester based on the python magic implementation from
-Adam Hupp, http://hupp.org/adam/hg/python-magic
+Adam Hupp(http://hupp.org/adam/hg/python-magic)
 
 As a fallback (especially if libmagic is not available, like on Windows)
 it acts only on files with a given file extension listed in 'extstring'.
@@ -23,7 +23,7 @@ You can find the latest stable releases under the
 
 ## Usage:
 
-    Usage: [OPTIONS] <directory> [<directory> ...]
+    Usage: ttws [OPTIONS] <directory> [<directory> ...]
 
     This script will recursively remove all trailing white spaces in all
     text files in a given list directories. Binary files and files residing in
@@ -50,11 +50,11 @@ You can find the latest stable releases under the
 
 
 ## License
-See =UNLICENSE= file
+See [UNLICENSE] file
 
 ## Development
-Author
-: "Dietmar Winkler" <dietmar.winkler@dwe.no>
+ * Author: "Dietmar Winkler" <dietmar.winkler@dwe.no>
+ * Contributors: See [graphs/contributors](../../graphs/contributors)
 
 You may report any issues with using the [Issues](../../issues) button.
 
