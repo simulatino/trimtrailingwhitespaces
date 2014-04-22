@@ -50,7 +50,7 @@ You can find the latest stable releases under the
 
 
 ## License
-See [UNLICENSE] file
+See [UNLICENSE](UNLICENSE) file
 
 ## Development
  * Author: "Dietmar Winkler" <dietmar.winkler@dwe.no>
