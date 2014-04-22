@@ -79,11 +79,13 @@ def detecttype(filepath):
 def trimWhitespace(filepath):
     """Trim trailing white spaces from a given filepath."""
     lines = []
-    for line in open(filepath, "r"):
-        lines.append(line.rstrip())
-    f = open(filepath, "w")
-    f.write("\n".join(lines) + "\n")
-    f.close
+    with open(filepath, "rb") as f:
+        for line in f:
+            lines.append(line.rstrip())
+    data = "\n".join(lines) + "\n"
+    newdata = data.replace("\r\n", "\n")
+    with open(filepath, "wb") as f:
+        f.write(newdata)
 
 def flatten(arg):
       ret = []
