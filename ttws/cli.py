@@ -3,8 +3,8 @@ import os
 import getopt
 import textwrap
 
-from . import extstring, detecttype
-
+from . import (BLACKLIST, cleanAnnotation, extstring, detecttype,
+               stripDocString, trimWhitespace)
 
 def main(args=None):
     if args is None:
