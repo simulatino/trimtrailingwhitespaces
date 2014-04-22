@@ -137,7 +137,7 @@ def cleanAnnotation(filepath):
         mo_file.write(out)
 
 def stripDocString(filepath):
-    """Clean out the obsolete or superflous annotations."""
+    """Strip spaces between string start/end and tag"""
     with open(filepath, 'r') as mo_file:
         string = mo_file.read()
 

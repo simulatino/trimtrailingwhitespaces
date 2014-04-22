@@ -7,7 +7,6 @@ License: See UNLICENSE file
 Usage: Run the build process by running the command 'python setup.py build'
        If everything works well you should find a subdirectory in the build
        subdirectory that contains the files needed to run the script
-       without Python
 
 """
 
@@ -24,12 +23,12 @@ Programming Language :: Python :: 2
 META = {
     'name': 'ttws',
     'url': 'https://github.com/dietmarw/trimtrailingwhitespaces',
-    'version': '0.3',
+    'version': '0.4-dev',
     'description': 'Script to remove trailing whitespaces from textfiles.',
     'classifiers': CLASSIFIERS,
     'license': 'UNLICENSE',
     'author': 'Dietmar Winkler',
-    'author_email': 'http://claimid/dietmarw',
+    'author_email': 'dietmar.winkler@dwe.no',
     'packages': find_packages(exclude=['test']),
     'entry_points': {
         'console_scripts': 'ttws = ttws.cli:main'

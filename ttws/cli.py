@@ -16,7 +16,7 @@ def main(args=None):
     # Look for optional arguments:
     try:
         opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean"])
-    # Unknown option is given trigger the display message:
+    # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unkownOption(args)
         sys.exit(0)
