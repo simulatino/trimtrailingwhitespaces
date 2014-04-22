@@ -3,7 +3,7 @@ import os
 import getopt
 import textwrap
 
-from . import *
+from . import extstring, detecttype
 
 
 def main(args=None):
