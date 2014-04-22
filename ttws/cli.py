@@ -1,8 +1,9 @@
 import sys
 import os
 import getopt
+import textwrap
 
-from . import extstring, textwrap, detecttype
+from . import *
 
 
 def main(args=None):
