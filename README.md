@@ -21,6 +21,22 @@ it acts only on files with a given file extension listed in 'extstring'.
 You can find the latest stable releases under the
 [releases link](../../releases).
 
+## Installation
+
+ * System requirement: Python >= 2.6
+
+### Linux/Mac/(Windows)
+
+Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws*:
+
+    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.4.tar.gz
+
+### Windows installers
+
+Staring from verion v0.4 we also generate a Windows installer under the
+[releases link](../../releases). The installer will look for the installed
+Python version on your machine.
+
 ## Usage:
 
     Usage: ttws [OPTIONS] <directory> [<directory> ...]
