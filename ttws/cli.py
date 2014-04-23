@@ -39,15 +39,12 @@ def main(args=None):
         elif opt in ("-s","--strip"):
             stripOpt = True
         elif opt in ("--eol"):
-            if  arg=="CRLF":
-                print arg
-                eol = "\r\n"
-            elif arg=="LF":
-                eol = "\n"
-            elif arg=="CR":
-                eol = "\r"
-            else:
-                eol = ""
+            eol = {
+                "CRLF": "\r\n",
+                "LF": "\n",
+                "CR": "\r"
+            }
+            eol = eol.get(arg, "")
         else:
             unkownOption(args)
             sys.exit(0)
@@ -107,8 +104,9 @@ def usage(script_name):
                 Force the line endings to be of type:
                  - CRLF = '\\r\\n' Windows
                  - LF = '\\n' POSIX
-                 - CR = '\\r' Mac
-                It defaults on your machine to: %s
+                 - CR = '\\r' Mac (pre OSX)
+                If empty or not specified it is set to the OS default.
+                I.e., on this machine to: %s.
 
             -c, --clean
                 WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
@@ -117,7 +115,7 @@ def usage(script_name):
                 Only use this if your code is under version control
                 and in combination with a careful code-diff review.
 
-        """ % (script_name,extstring, repr(os.linesep))
+        """ % (script_name, extstring, repr(os.linesep))
     print textwrap.dedent(message)
 
 

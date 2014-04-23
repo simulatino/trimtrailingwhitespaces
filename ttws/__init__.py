@@ -79,12 +79,11 @@ def detecttype(filepath):
 
 def trimWhitespace(filepath, eol):
     """Trim trailing white spaces from a given filepath."""
-    lines = []
-    with io.open(filepath, "r") as f:
-        for line in f:
-            lines.append(line.rstrip())
-    with io.open(filepath, "w", newline=eol) as f:
-        f.write("\n".join(lines) + "\n")
+    with io.open(filepath, "r") as source:
+        for line in source:
+            lines = [line.rstrip() for line in source]
+    with io.open(filepath, "w", newline=eol) as target:
+        target.write("\n".join(lines) + "\n")
 
 def flatten(arg):
       ret = []
@@ -154,5 +153,5 @@ def stripDocString(filepath, eol):
         either.leaveWhitespace()
         out = either.transformString(string)
 
-    with io.open(filepath,'w',newline=eol) as mo_file:
+    with io.open(filepath, 'w', newline=eol) as mo_file:
         mo_file.write(out)

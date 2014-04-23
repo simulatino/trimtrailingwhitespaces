@@ -46,7 +46,8 @@ You can find the latest stable releases under the
             Force the line endings to be of type:
             - CRLF = '\r\n' Windows
             - LF = '\n' POSIX
-            - CR = '\r' Mac
+            - CR = '\\r' Mac (pre OSX)
+            If empty or not specified it is set to the OS default.
 
         -c, --clean
             WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
