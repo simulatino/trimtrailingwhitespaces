@@ -15,7 +15,8 @@ def main(args=None):
 
     # Look for optional arguments:
     try:
-        opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean"])
+        opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean",
+                                                     "eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unkownOption(args)
@@ -28,6 +29,7 @@ def main(args=None):
     # If help option is given display help otherwise display warning:
     cleanOpt = False
     stripOpt = False
+    eol = ""
     for opt, arg in opts:
         if opt in ("-h","--help"):
             usage(args)
@@ -36,6 +38,13 @@ def main(args=None):
             cleanOpt = True
         elif opt in ("-s","--strip"):
             stripOpt = True
+        elif opt in ("--eol"):
+            eol = {
+                "CRLF": "\r\n",
+                "LF": "\n",
+                "CR": "\r"
+            }
+            eol = eol.get(arg, "")
         else:
             unkownOption(args)
             sys.exit(0)
@@ -56,15 +65,15 @@ def main(args=None):
                     filetype = detecttype(filepath)
                     if filetype is "mo" and cleanOpt is True:
                         print "trimming and cleaning %s" % filepath
-                        trimWhitespace(filepath)
-                        cleanAnnotation(filepath)
+                        trimWhitespace(filepath, eol)
+                        cleanAnnotation(filepath, eol)
                     elif filetype is "mo" and stripOpt is True:
                         print "trimming and stripping %s" % filepath
-                        trimWhitespace(filepath)
-                        stripDocString(filepath)
+                        trimWhitespace(filepath, eol)
+                        stripDocString(filepath, eol)
                     elif filetype is "mo" or filetype is "text":
                         print "trimming %s" % filepath
-                        trimWhitespace(filepath)
+                        trimWhitespace(filepath, eol)
                     else:
                         print "skipping file of type %s: %s" % (filetype, filepath)
 
@@ -91,12 +100,22 @@ def usage(script_name):
                 revision strings that contain HTML documentation
                 (those disturb the proper HTML rendering in 'some' tools)
 
+            --eol=[CRLF|LF|CR]
+                Force the line endings to be of type:
+                 - CRLF = '\\r\\n' Windows
+                 - LF = '\\n' POSIX
+                 - CR = '\\r' Mac (pre OSX)
+                If empty or not specified it is set to the OS default.
+                I.e., on this machine to: %s.
+
             -c, --clean
                 WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
                 Removes obsolete or superfluous annotation constructs
-                from Modelica files. Only use this if your code is under version control
+                from Modelica files.
+                Only use this if your code is under version control
                 and in combination with a careful code-diff review.
-        """ % (script_name,extstring,)
+
+        """ % (script_name, extstring, repr(os.linesep))
     print textwrap.dedent(message)
 
 

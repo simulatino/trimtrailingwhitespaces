@@ -23,6 +23,7 @@ from __future__ import absolute_import, with_statement
 
 import os
 import textwrap
+import io
 
 from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
         ZeroOrMore, Optional, CharsNotIn, ParseException, CaselessLiteral)
@@ -76,14 +77,13 @@ def detecttype(filepath):
         else:
             return "unknown"
 
-def trimWhitespace(filepath):
+def trimWhitespace(filepath, eol):
     """Trim trailing white spaces from a given filepath."""
-    lines = []
-    for line in open(filepath, "r"):
-        lines.append(line.rstrip())
-    f = open(filepath, "w")
-    f.write("\n".join(lines) + "\n")
-    f.close
+    with io.open(filepath, "r") as source:
+        for line in source:
+            lines = [line.rstrip() for line in source]
+    with io.open(filepath, "w", newline=eol) as target:
+        target.write("\n".join(lines) + "\n")
 
 def flatten(arg):
       ret = []
@@ -106,9 +106,9 @@ def skipNonEmptyGraphics(s, loc, tokens):
     if graphicsPresent:
         raise ParseException('graphics defined, skipping...')
 
-def cleanAnnotation(filepath):
+def cleanAnnotation(filepath, eol):
     """Clean out the obsolete or superflous annotations."""
-    with open(filepath, 'r') as mo_file:
+    with io.open(filepath, 'r') as mo_file:
         string = mo_file.read()
         # remove 'Window(),' and 'Coordsys()' annotations:
         WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
@@ -133,12 +133,12 @@ def cleanAnnotation(filepath):
         # in case we end up with empty annotations remove them too
         AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(AnnotationRef).transformString(out)
-    with open(filepath,'w') as mo_file:
+    with io.open(filepath,'w',newline=eol ) as mo_file:
         mo_file.write(out)
 
-def stripDocString(filepath):
+def stripDocString(filepath, eol):
     """Strip spaces between string start/end and tag"""
-    with open(filepath, 'r') as mo_file:
+    with io.open(filepath, 'r') as mo_file:
         string = mo_file.read()
 
         # define expressions to match leading and trailing
@@ -153,5 +153,5 @@ def stripDocString(filepath):
         either.leaveWhitespace()
         out = either.transformString(string)
 
-    with open(filepath,'w') as mo_file:
+    with io.open(filepath, 'w', newline=eol) as mo_file:
         mo_file.write(out)
