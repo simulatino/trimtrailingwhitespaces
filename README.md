@@ -33,7 +33,7 @@ Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws
 
 ### Windows installers
 
-Staring from verion v0.4 we also generate a Windows installer under the
+Starting from verion v0.4 we also generate a Windows installer under the
 [releases link](../../releases). The installer will look for the installed
 Python version on your machine.
 
