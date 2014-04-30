@@ -87,6 +87,10 @@ def usage(script_name):
          text files in a given list directories. Binary files and files residing in
          '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
+         Since the main application is for Modelica projects it expects all files
+         to be of type ASCII or UTF8. Otherwise it will throw an exception,
+         report the illegal file and terminate.
+
         Note for Windows users:
          If you do not have libmagic installed, the script will fall back to
          only trim files with the following extensions: %s

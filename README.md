@@ -29,11 +29,11 @@ You can find the latest stable releases under the
 
 Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws*:
 
-    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.4.tar.gz
+    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.4.1.tar.gz
 
 ### Windows installers
 
-Starting from verion v0.4 we also generate a Windows installer under the
+Starting from version v0.4.1 we also generate a Windows installer under the
 [releases link](../../releases). The installer will look for the installed
 Python version on your machine.
 
@@ -44,6 +44,10 @@ Python version on your machine.
     This script will recursively remove all trailing white spaces in all
     text files in a given list directories. Binary files and files residing in
     '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
+
+    Since the main application is for Modelica projects it expects all files
+    to be of type ASCII or UTF8. Otherwise it will throw an exception,
+    report the illegal file and terminate.
 
     Note for Windows users:
     If you do not have libmagic installed, the script will fall back to

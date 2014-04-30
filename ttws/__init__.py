@@ -79,11 +79,15 @@ def detecttype(filepath):
 
 def trimWhitespace(filepath, eol):
     """Trim trailing white spaces from a given filepath."""
-    with io.open(filepath, "r") as source:
-        for line in source:
+    try:
+        with io.open(filepath, "r") as source:
             lines = [line.rstrip() for line in source]
-    with io.open(filepath, "w", newline=eol) as target:
-        target.write("\n".join(lines) + "\n")
+        with io.open(filepath, "w", newline=eol) as target:
+            target.write("\n".join(lines) + "\n")
+    except (UnicodeDecodeError, TypeError) as inst:
+        print("\nOops! Failing to process file: %s\n"
+              "Are you sure it is of pure ASCII or UTF8 encoding?\n" % source.name)
+        raise
 
 def flatten(arg):
       ret = []
