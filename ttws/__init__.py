@@ -117,7 +117,7 @@ def cleanAnnotation(filepath, eol):
     """Clean out the obsolete or superflous annotations."""
     with io.open(filepath, 'r') as mo_file:
         string = mo_file.read()
-        # remove 'Window(),' and 'Coordsys()' annotations:
+        # remove old Modelica 1 'Window(),' and 'Coordsys()' annotations:
         WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(WindowRef).transformString(string)
         # special care needs to be taken if the annotation is the last one
