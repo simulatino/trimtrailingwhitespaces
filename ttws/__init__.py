@@ -26,7 +26,8 @@ import textwrap
 import io
 
 from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
-        ZeroOrMore, Optional, CharsNotIn, ParseException, CaselessLiteral)
+                       ZeroOrMore, Optional, CharsNotIn, ParseException,
+                       CaselessLiteral)
 
 
 # For Windows: list of file extensions to apply the script on
@@ -127,7 +128,32 @@ def cleanAnnotation(filepath, eol):
         expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')|Keyword('DymolaStoredErrors')|Keyword('Diagram')|Keyword('Icon')) + ~nestedExpr() +  ~CharsNotIn(',)')
         out = Suppress(expRef).transformString(out)
 
-        # Remove Icon and Diagram annotations that do not contain any graphics
+        # remove superfluous annotations with defaults
+        defaultRef = ((Keyword('rotation')|Keyword('visible')|Keyword('origin'))
+                      + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
+                      + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
+                      + ',' + ZeroOrMore(White(' \t')))
+        out = Suppress(defaultRef).transformString(out)
+        # special rule for initial scale in order to avoid false positives
+        iniSRef = (Keyword('initialScale')
+                   + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
+                   + Keyword('0.1')
+                   + ',' + ZeroOrMore(White(' \t')))
+        out = Suppress(iniSRef).transformString(out)
+        # special care for the last ones again
+        lastDefaultRef = (Optional(',')
+                          + (Keyword('rotation')|Keyword('visible')|Keyword('origin'))
+                          + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
+                          + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
+                          + ZeroOrMore(White(' \t')))
+        out = Suppress(lastDefaultRef).transformString(out)
+        lastIniSRef = (Optional(',') + Keyword('initialScale')
+                       + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
+                       + Keyword('0.1')
+                       + ZeroOrMore(White(' \t')))
+        out = Suppress(lastIniSRef).transformString(out)
+
+        # remove Icon and Diagram annotations that do not contain any graphics
         emptyRef =  ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ',' + ZeroOrMore(White(' \t') + lineEnd)
         emptyRef.setParseAction(skipNonEmptyGraphics)
         out = Suppress(emptyRef).transformString(out)
