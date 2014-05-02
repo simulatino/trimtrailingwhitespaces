@@ -104,8 +104,9 @@ def skipNonEmptyGraphics(s, loc, tokens):
     flattened =  flatten(tokens.args[0].asList())
     graphicsPresent = False
     for substring in flattened:
-        if (substring.startswith('graphics') or
-            substring.startswith(',graphics')):
+        if (substring.startswith('graphics')
+            or substring.startswith(',graphics')
+            or not substring.startswith('extent={{-100,-100},{100,100}}')):
                 if not ('graphics' or ',graphics') in flattened[-1]:
                     graphicsPresent = True
     if graphicsPresent:
