@@ -104,9 +104,10 @@ def skipNonEmptyGraphics(s, loc, tokens):
     flattened =  flatten(tokens.args[0].asList())
     graphicsPresent = False
     for substring in flattened:
-        if substring.startswith('graphics'):
-            if not substring.endswith('graphics'):
-                graphicsPresent = True
+        if (substring.startswith('graphics') or
+            substring.startswith(',graphics')):
+                if not ('graphics' or ',graphics') in flattened[-1]:
+                    graphicsPresent = True
     if graphicsPresent:
         raise ParseException('graphics defined, skipping...')
 
