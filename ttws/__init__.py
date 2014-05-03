@@ -124,9 +124,18 @@ def cleanAnnotation(filepath, eol):
         WindowLastRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(WindowLastRef).transformString(out)
 
-        # remove empty '[__Dymola_]experimentSetupOutput(),' annotation:
-        expRef = Optional(',') +  ZeroOrMore(White(' \t')) +  Optional('__Dymola_') + (Keyword('experimentSetupOutput')|Keyword('experiment')|Keyword('DymolaStoredErrors')|Keyword('Diagram')|Keyword('Icon')) + ~nestedExpr() +  ~CharsNotIn(',)')
-        out = Suppress(expRef).transformString(out)
+        # remove empty and superfluous Dymola specific annotations:
+        dymolaRef = (ZeroOrMore(White(' \t'))
+                     + ((Optional('__Dymola_') + 'experimentSetupOutput')|
+                        Keyword('DymolaStoredErrors'))
+                     + ~nestedExpr() + ',' + ZeroOrMore(White(' \t')))
+        out = Suppress(dymolaRef).transformString(out)
+        # special care of the last one again
+        lastDymolaRef = (Optional(',') + ZeroOrMore(White(' \t'))
+                         + ((Optional('__Dymola_') + 'experimentSetupOutput')|
+                            Keyword('DymolaStoredErrors'))
+                         + ~nestedExpr() + ZeroOrMore(White(' \t')))
+        out = Suppress(lastDymolaRef).transformString(out)
 
         # remove superfluous annotations with defaults
         defaultRef = ((Keyword('rotation')|Keyword('visible')|Keyword('origin'))
