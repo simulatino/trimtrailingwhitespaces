@@ -167,14 +167,14 @@ def cleanAnnotation(filepath, eol):
         emptyRef.setParseAction(skipNonEmptyGraphics)
         out = Suppress(emptyRef).transformString(out)
         # special care for the last annotation again
-        emptyRef =   Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ZeroOrMore(White(' \t') + lineEnd)
-        emptyRef.setParseAction(skipNonEmptyGraphics)
-        out = Suppress(emptyRef).transformString(out)
+        lastEmptyRef =   Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ZeroOrMore(White(' \t') + lineEnd)
+        lastEmptyRef.setParseAction(skipNonEmptyGraphics)
+        out = Suppress(lastEmptyRef).transformString(out)
 
         # in case we end up with empty annotations remove them too
         AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(AnnotationRef).transformString(out)
-    with io.open(filepath,'w',newline=eol ) as mo_file:
+    with io.open(filepath,'w', newline= eol) as mo_file:
         mo_file.write(out)
 
 def stripDocString(filepath, eol):
