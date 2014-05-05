@@ -94,7 +94,8 @@ def usage(script_name):
 
         Note for Windows users:
          If you do not have libmagic installed, the script will fall back to
-         only trim files with the following extensions: %s
+         only trim files with the following extensions:
+             %s
 
         Options:
             -h, --help

@@ -32,7 +32,7 @@ from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
 
 # For Windows: list of file extensions to apply the script on
 # (including the dot and separated by a comma)
-extstring = ".mo,.mos,.c,.h,.cpp,.txt"
+extstring = ".mo,.mos,.c,.h,.cpp,.txt,.order"
 
 # list of version control directories to ignore
 BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn', '.#']

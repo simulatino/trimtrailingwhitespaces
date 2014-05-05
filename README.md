@@ -51,7 +51,8 @@ Python version on your machine.
 
     Note for Windows users:
     If you do not have libmagic installed, the script will fall back to
-    only trim files with the following extensions: .mo,.mos,.c,.h,.cpp,.txt
+    only trim files with the following extensions:
+        .mo,.mos,.c,.h,.cpp,.txt,.order
 
     Options:
         -h, --help
