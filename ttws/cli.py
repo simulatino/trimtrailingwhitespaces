@@ -4,8 +4,8 @@ import getopt
 import textwrap
 
 from . import (BLACKLIST, cleanAnnotation, extstring, detecttype,
-               stripDocString, trimWhitespace, unkownDirectory,
-               unkownOption)
+               stripDocString, trimWhitespace, unknownDirectory,
+               unknownOption)
 
 def main(args=None):
     if args is None:
@@ -20,7 +20,7 @@ def main(args=None):
                                                      "eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
-        unkownOption(args)
+        unknownOption(args)
         sys.exit(0)
     # if no dir name is given print the usage message
     if not dirnames:
@@ -47,14 +47,14 @@ def main(args=None):
             }
             eol = eol.get(arg, "")
         else:
-            unkownOption(args)
+            unknownOption(args)
             sys.exit(0)
 
     # Walk through the given path and call trim function for text files only:
     for dirname in dirnames:
         if os.path.exists(dirname) is False:
             # Warn about an unknown directory
-            unkownDirectory(dirname)
+            unknownDirectory(dirname)
         else:
             for path, dirs, files in os.walk(dirname):
                 for directory in dirs:
