@@ -82,7 +82,7 @@ def main(args=None):
 def usage(script_name):
     """Help message on usage."""
     message = """
-        Usage: %s [OPTIONS] <directory> [<directory> ...]
+        Usage: ttws [OPTIONS] <directory> [<directory> ...]
 
          This script will recursively remove all trailing white spaces in all
          text files in a given list directories. Binary files and files residing in
@@ -120,7 +120,7 @@ def usage(script_name):
                 Only use this if your code is under version control
                 and in combination with a careful code-diff review.
 
-        """ % (script_name, extstring, repr(os.linesep))
+        """ % (extstring, repr(os.linesep))
     print textwrap.dedent(message)
 
 
