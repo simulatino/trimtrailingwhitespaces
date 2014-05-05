@@ -29,7 +29,7 @@ You can find the latest stable releases under the
 
 Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws*:
 
-    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.4.1.tar.gz
+    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.0.tar.gz
 
 ### Windows installers
 
@@ -70,7 +70,8 @@ Python version on your machine.
             If empty or not specified it is set to the OS default.
 
         -c, --clean
-            WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
+            WARNING: USE THIS OPTION AT YOUR OWN RISK AS
+                     IT *MIGHT* BREAK YOUR CODE!
             Removes obsolete or superfluous annotation constructs
             from Modelica files.
             Only use this if your code is under version control

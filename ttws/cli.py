@@ -114,7 +114,8 @@ def usage(script_name):
                 I.e., on this machine to: %s.
 
             -c, --clean
-                WARNING: USE THIS OPTION AT YOUR OWN RISK AS IT *WILL* BREAK YOUR CODE!
+                WARNING: USE THIS OPTION AT YOUR OWN RISK AS
+                         IT *MIGHT* BREAK YOUR CODE!
                 Removes obsolete or superfluous annotation constructs
                 from Modelica files.
                 Only use this if your code is under version control
