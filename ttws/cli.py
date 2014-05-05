@@ -4,7 +4,8 @@ import getopt
 import textwrap
 
 from . import (BLACKLIST, cleanAnnotation, extstring, detecttype,
-               stripDocString, trimWhitespace)
+               stripDocString, trimWhitespace, unkownDirectory,
+               unkownOption)
 
 def main(args=None):
     if args is None:
