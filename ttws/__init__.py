@@ -106,7 +106,7 @@ def skipNonEmptyGraphics(s, loc, tokens):
     emptyGraphics = False
     defaultExtent = False
     for substring in flattened:
-        if substring.startswith('extent={{-100,-100},{100,100}}'):
+        if 'extent={{-100,-100},{100,100}}' in ''.join(flattened):
             defaultExtent = True
         if 'graphics' in substring:
                 if 'graphics' in flattened[-1]:
