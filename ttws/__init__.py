@@ -26,7 +26,7 @@ import textwrap
 import io
 
 from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
-                       ZeroOrMore, Optional, CharsNotIn, ParseException,
+                       ZeroOrMore, Optional, ParseException,
                        CaselessLiteral)
 
 
@@ -47,14 +47,14 @@ def unknownOption(script_name, args):
 
         Use %s -h [--help] for usage instructions.
         """ % (args,script_name,)
-    print textwrap.dedent(warning)
+    print(textwrap.dedent(warning))
 
 def unknownDirectory(args):
     """Warning message for unknown Directory."""
     warning = """
         WARNING: Ignoring unkown directory: "%s"
         """ % (args)
-    print textwrap.dedent(warning)
+    print(textwrap.dedent(warning))
 
 def detecttype(filepath):
     """Detect the mime type of the text file."""
@@ -85,9 +85,10 @@ def trimWhitespace(filepath, eol):
             lines = [line.rstrip() for line in source]
         with io.open(filepath, "w", newline=eol) as target:
             target.write("\n".join(lines) + "\n")
-    except (UnicodeDecodeError, TypeError) as inst:
+    except (UnicodeDecodeError, TypeError) as err:
         print("\nOops! Failing to process file: %s\n"
-              "Are you sure it is of pure ASCII or UTF8 encoding?\n" % source.name)
+              "Are you sure it is of pure ASCII or UTF8 encoding?\n"
+              "Message: %s\n") % (source.name, err)
         raise
 
 def flatten(arg):
@@ -110,7 +111,7 @@ def skipNonEmptyGraphics(s, loc, tokens):
     extentDefault = 'extent={{-100,-100},{100,100}}' in joinedFlattened
     for substring in flattened:
         if 'graphics' in substring:
-            if 'graphics' in flattened[-1]:
+            if lastGraphics:
                 graphicsPresent = False
             else:
                 graphicsPresent = True

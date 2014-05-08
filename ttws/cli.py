@@ -123,7 +123,7 @@ def usage(script_name):
                 and in combination with a careful code-diff review.
 
         """ % (extstring, repr(os.linesep))
-    print textwrap.dedent(message)
+    print(textwrap.dedent(message))
 
 
 if __name__ == "__main__":
