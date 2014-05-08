@@ -23,20 +23,18 @@ You can find the latest stable releases under the
 [releases link](../../releases).
 
 ## Installation
-
  * System requirement: Python >= 2.6
 
-### Linux/Mac/(Windows)
+Easiest way to install *ttws* is to use [pip](http://www.pip-installer.org).
+This will install (and update) *ttws* and also all its depenencies.
 
-Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws*:
+### Linux/Mac
 
-    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
+    $ sudo pip install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
 
-### Windows installers
+### Windows
 
-Starting from version v0.4.1 we also generate a Windows installer under the
-[releases link](../../releases). The installer will look for the installed
-Python version on your machine.
+    C:\Python27\Scripts>pip.exe install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
 
 ## Usage:
 
