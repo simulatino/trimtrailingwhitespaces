@@ -29,7 +29,7 @@ You can find the latest stable releases under the
 
 Best way is to use [pip](http://www.pip-installer.org) in order to install *ttws*:
 
-    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.0.tar.gz
+    $ sudo pip install https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
 
 ### Windows installers
 
