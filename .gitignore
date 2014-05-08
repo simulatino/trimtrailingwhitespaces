@@ -1,6 +1,5 @@
 *.pyc
 *~
-test/
 build/
 dist/
 ttws.egg-info/
