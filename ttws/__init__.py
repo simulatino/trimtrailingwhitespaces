@@ -12,8 +12,8 @@ version control specific directories are skipped.
 As an addition one can also let it clean out obsolete or empty/superfluous
 Modelica annotations from Modelica (`*.mo`) files.
 
-It uses a binary tester based on the python magic implementation from
-    Adam Hupp, http://hupp.org/adam/hg/python-magic
+It uses [Adam Hupp](http://hupp.org/adam)'s
+[python-magic](https://github.com/ahupp/python-magic) as binary tester.
 
 As a fallback (especially if libmagic is not available, like on Windows)
 it acts only on files with a given file extension listed in 'extstring'.
@@ -59,7 +59,7 @@ def unknownDirectory(args):
 def detecttype(filepath):
     """Detect the mime type of the text file."""
     try:
-        from .magic import Magic
+        from magic import Magic
         mime = Magic(mime=True)
         type = mime.from_file(filepath)
         root, ext = os.path.splitext(filepath)

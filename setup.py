@@ -36,7 +36,7 @@ META = {
     'platforms': 'Posix; MacOS X; Windows',
     'include_package_data': False,
     'zip_safe': False,
-    'install_requires': ['pyparsing'],
+    'install_requires': ['pyparsing', 'python-magic'],
     'extras_require': {
         'testing': ['pytest']
     }
