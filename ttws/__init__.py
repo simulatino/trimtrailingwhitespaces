@@ -103,17 +103,18 @@ def flatten(arg):
 
 def skipNonEmptyGraphics(s, loc, tokens):
     flattened =  flatten(tokens.args[0].asList())
-    emptyGraphics = True
-    defaultExtent = False
+    joinedFlattened = ''.join(flattened)
+    graphicsPresent = False
+    lastGraphics = 'graphics' in flattened[-1]
+    extentPresent = 'extent' in joinedFlattened
+    extentDefault = 'extent={{-100,-100},{100,100}}' in joinedFlattened
     for substring in flattened:
-        if 'extent={{-100,-100},{100,100}}' in ''.join(flattened):
-            defaultExtent = True
         if 'graphics' in substring:
-                if 'graphics' in flattened[-1]:
-                    emptyGraphics = True
-                else:
-                    emptyGraphics = False
-    removeGraphics = emptyGraphics and defaultExtent
+            if 'graphics' in flattened[-1]:
+                graphicsPresent = False
+            else:
+                graphicsPresent = True
+    removeGraphics = not graphicsPresent and (not extentPresent or extentDefault)
     if not removeGraphics:
         raise ParseException('graphics defined, skipping...')
 
