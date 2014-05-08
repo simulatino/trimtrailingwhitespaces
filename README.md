@@ -9,7 +9,7 @@ text files in a given directory. Binary files and files residing in
 version control specific directories are skipped.
 
 As an addition one can also let it clean out obsolete or empty/superfluous
-Modelica /annotations/ from [Modelica](https://modelica.org) (`*.mo`) files.
+[Modelica](https://modelica.org) *annotations* in  `*.mo` files.
 
 It uses [Adam Hupp](http://hupp.org/adam)'s
 [python-magic](https://github.com/ahupp/python-magic) as binary tester.
