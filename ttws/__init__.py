@@ -119,7 +119,7 @@ def skipNonEmptyGraphics(s, loc, tokens):
         raise ParseException('graphics defined, skipping...')
 
 def cleanAnnotation(filepath, eol):
-    """Clean out the obsolete or superflous annotations."""
+    """Clean out the obsolete or superfluous annotations."""
     with io.open(filepath, 'r') as mo_file:
         string = mo_file.read()
         # remove old Modelica 1 'Window(),' and 'Coordsys()' annotations:
