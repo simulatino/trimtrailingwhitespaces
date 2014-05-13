@@ -149,10 +149,10 @@ def cleanAnnotation(filepath, eol):
                       + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
                       + ',' + ZeroOrMore(White(' \t')))
         out = Suppress(defaultRef).transformString(out)
-        # special rule for initial scale in order to avoid false positives
-        iniSRef = (Keyword('initialScale')
+        # special rule for initialScale and smooth in order to avoid false positives
+        iniSRef = ((Keyword('initialScale')|Keyword('smooth'))
                    + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
-                   + Keyword('0.1')
+                   + (Keyword('0.1')|Keyword('Smooth.None'))
                    + ',' + ZeroOrMore(White(' \t')))
         out = Suppress(iniSRef).transformString(out)
         # special care for the last ones again
@@ -162,9 +162,9 @@ def cleanAnnotation(filepath, eol):
                           + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
                           + ZeroOrMore(White(' \t')))
         out = Suppress(lastDefaultRef).transformString(out)
-        lastIniSRef = (Optional(',') + Keyword('initialScale')
+        lastIniSRef = (Optional(',') + (Keyword('initialScale')|Keyword('smooth'))
                        + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
-                       + Keyword('0.1')
+                       + (Keyword('0.1')|Keyword('Smooth.None'))
                        + ZeroOrMore(White(' \t')))
         out = Suppress(lastIniSRef).transformString(out)
 
