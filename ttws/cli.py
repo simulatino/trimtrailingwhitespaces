@@ -59,24 +59,24 @@ def main(args=None):
             for path, dirs, files in os.walk(dirname):
                 for directory in dirs:
                     if directory in BLACKLIST:
-                        print "skipping version control dir: %s " % directory
+                        print("skipping version control dir: %s " % directory)
                         dirs.remove(directory)
                 for file in files:
                     filepath = os.path.join(path, file)
                     filetype = detecttype(filepath)
                     if filetype is "mo" and cleanOpt is True:
-                        print "trimming and cleaning %s" % filepath
+                        print("trimming and cleaning %s" % filepath)
                         trimWhitespace(filepath, eol)
                         cleanAnnotation(filepath, eol)
                     elif filetype is "mo" and stripOpt is True:
-                        print "trimming and stripping %s" % filepath
+                        print("trimming and stripping %s" % filepath)
                         trimWhitespace(filepath, eol)
                         stripDocString(filepath, eol)
                     elif filetype is "mo" or filetype is "text":
-                        print "trimming %s" % filepath
+                        print("trimming %s" % filepath)
                         trimWhitespace(filepath, eol)
                     else:
-                        print "skipping file of type %s: %s" % (filetype, filepath)
+                        print("skipping file of type %s: %s" % (filetype, filepath))
 
 
 def usage(script_name):

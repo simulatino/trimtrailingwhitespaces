@@ -19,7 +19,7 @@ As a fallback (especially if libmagic is not available, like on Windows)
 it acts only on files with a given file extension listed in 'extstring'.
 
 """
-from __future__ import absolute_import, with_statement
+
 
 import os
 import textwrap
