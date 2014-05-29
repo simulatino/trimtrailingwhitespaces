@@ -34,7 +34,7 @@ This will install (and update) *ttws* and also all its depenencies.
 
 ### Windows
 
-    C:\Python27\Scripts>pip.exe install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
+    C:\Python27\Scripts>pip.exe install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.6.0.tar.gz
 
 ## Usage:
 
