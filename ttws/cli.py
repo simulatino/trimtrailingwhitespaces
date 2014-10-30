@@ -30,7 +30,7 @@ def main(args=None):
     # If help option is given display help otherwise display warning:
     cleanOpt = False
     stripOpt = False
-    eol = ""
+    eol = os.linesep
     for opt, arg in opts:
         if opt in ("-h","--help"):
             usage(args)
@@ -45,7 +45,7 @@ def main(args=None):
                 "LF": "\n",
                 "CR": "\r"
             }
-            eol = eol.get(arg, "")
+            eol = eol.get(arg, os.linesep)
         else:
             unknownOption(args)
             sys.exit(0)
