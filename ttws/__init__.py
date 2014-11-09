@@ -83,8 +83,8 @@ def trimWhitespace(filepath, eol):
     try:
         with io.open(filepath, "r") as source:
             lines = [line.rstrip() for line in source]
-        with io.open(filepath, "w", newline=eol) as target:
-            target.write(u''+eol.join(lines) + eol)
+        with io.open(filepath, "w", newline="") as target:
+            target.write(eol.join(lines) +eol)
     except (UnicodeDecodeError, TypeError) as err:
         print("\nOops! Failing to process file: %s\n"
               "Are you sure it is of pure ASCII or UTF8 encoding?\n"
