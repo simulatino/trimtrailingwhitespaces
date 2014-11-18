@@ -17,7 +17,7 @@ def main(args=None):
     # Look for optional arguments:
     try:
         opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean",
-                                                     "eol="])
+                                                     "eof","eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unknownOption(args)
@@ -30,6 +30,7 @@ def main(args=None):
     # If help option is given display help otherwise display warning:
     cleanOpt = False
     stripOpt = False
+    eofOpt = False
     eol = os.linesep
     for opt, arg in opts:
         if opt in ("-h","--help"):
@@ -39,6 +40,8 @@ def main(args=None):
             cleanOpt = True
         elif opt in ("-s","--strip"):
             stripOpt = True
+        elif opt in ("--eof"):
+            eofOpt = True
         elif opt in ("--eol"):
             eol = {
                 "CRLF": "\r\n",
@@ -64,6 +67,7 @@ def main(args=None):
                 for file in files:
                     filepath = os.path.join(path, file)
                     filetype = detecttype(filepath)
+					# --help and empty opts have been handled before
                     if filetype is "mo" and cleanOpt is True:
                         print("trimming and cleaning %s" % filepath)
                         trimWhitespace(filepath, eol)
@@ -72,6 +76,10 @@ def main(args=None):
                         print("trimming and stripping %s" % filepath)
                         trimWhitespace(filepath, eol)
                         stripDocString(filepath, eol)
+                    elif filetype is "mo" and eofOpt is True:
+                        print("trimming and normalizing EOF for %s" % filepath)
+                        trimWhitespace(filepath, eol)
+                        normalizeEOF(filepath, eol)
                     elif filetype is "mo" or filetype is "text":
                         print("trimming %s" % filepath)
                         trimWhitespace(filepath, eol)
@@ -105,6 +113,10 @@ def usage(script_name):
                 strips leading or trailing white spaces from info or
                 revision strings that contain HTML documentation
                 (those disturb the proper HTML rendering in 'some' tools)
+				
+            --eof
+                normalizes the end of file so that it ends with a single empty 
+				newline
 
             --eol=[CRLF|LF|CR]
                 Force the line endings to be of type:
