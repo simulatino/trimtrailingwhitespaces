@@ -92,10 +92,14 @@ def trimWhitespace(filepath, eol):
         raise
 
 def normalizeEOF(filepath, eol):
-    """Normalize EOF from a given filepath."""
+    """Trim trailing white spaces and normalize EOF from a given filepath."""
     try:
         with io.open(filepath, "r") as source:
             lines = [line.rstrip() for line in source]
+            if len(lines) > 1:
+                while lines[-1].isspace():
+                    print(lines[-1])
+                    lines = lines[0:(len(lines)-1)]
         with io.open(filepath, "w", newline="") as target:
             target.write(eol.join(lines) +eol)
     except (UnicodeDecodeError, TypeError) as err:
