@@ -4,7 +4,7 @@ import getopt
 import textwrap
 
 from . import (BLACKLIST, cleanAnnotation, extstring, detecttype,
-               stripDocString, trimWhitespace, unknownDirectory,
+               stripDocString, trimWhitespace, normalizeEOF, unknownDirectory,
                unknownOption)
 
 def main(args=None):
@@ -115,8 +115,8 @@ def usage(script_name):
                 (those disturb the proper HTML rendering in 'some' tools)
 				
             --eof
-                normalizes the end of file so that it ends with a single empty 
-				newline
+                normalizes the end of file so that it ends with a single empty
+                newline
 
             --eol=[CRLF|LF|CR]
                 Force the line endings to be of type:
