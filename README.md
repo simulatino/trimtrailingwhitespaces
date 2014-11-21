@@ -41,9 +41,9 @@ This will install (and update) *ttws* and also all its depenencies.
     Usage: ttws [OPTIONS] <directory> [<directory> ...]
 
     This script will recursively scan all text files in a given list of 
-    directories and remove all trailing white space and multiple blank lines at 
-    the end of the file. Binary files and files residing in '.bzr', '.cvs', 
-    '.git', '.hg', '.svn' directories are skipped.
+    directories and remove all trailing white space in every line as well 
+    as multiple blank lines at the end of the file. Binary files and files 
+    residing in '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
     Since the main application is for Modelica projects it expects all files
     to be of type ASCII or UTF8. Otherwise it will throw an exception,
