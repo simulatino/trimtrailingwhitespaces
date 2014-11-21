@@ -83,6 +83,8 @@ def trimWhitespace(filepath, eol):
     try:
         with io.open(filepath, "r") as source:
             lines = [line.rstrip() for line in source]
+            while len(lines) > 1 and not lines[-1]:
+                lines.pop(-1)
         with io.open(filepath, "w", newline="") as target:
             target.write(eol.join(lines) +eol)
     except (UnicodeDecodeError, TypeError) as err:
