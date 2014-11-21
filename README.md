@@ -30,19 +30,19 @@ This will install (and update) *ttws* and also all its depenencies.
 
 ### Linux/Mac
 
-    $ sudo pip install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.5.1.tar.gz
+    $ sudo pip install -U ttws
 
 ### Windows
 
-    C:\Python27\Scripts>pip.exe install -U https://github.com/dietmarw/trimtrailingwhitespaces/archive/v0.6.0.tar.gz
+    C:\Python27\Scripts>pip.exe install -U ttws
 
 ## Usage:
 
     Usage: ttws [OPTIONS] <directory> [<directory> ...]
 
-    This script will recursively scan all text files in a given list of 
-    directories and remove all trailing white space in every line as well 
-    as multiple blank lines at the end of the file. Binary files and files 
+    This script will recursively scan all text files in a given list of
+    directories and remove all trailing white space in every line as well
+    as multiple blank lines at the end of the file. Binary files and files
     residing in '.bzr', '.cvs', '.git', '.hg', '.svn' directories are skipped.
 
     Since the main application is for Modelica projects it expects all files
