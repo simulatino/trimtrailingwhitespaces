@@ -61,6 +61,10 @@ This will install (and update) *ttws* and also all its depenencies.
             strips leading or trailing white spaces from info or
                 revision strings that contain HTML documentation
                     (those disturb the proper HTML rendering in 'some' tools)
+					
+        --eof
+            normalizes the end of file so that it ends with a single empty 
+			newline
 
         --eol=[CRLF|LF|CR]
             Force the line endings to be of type:
