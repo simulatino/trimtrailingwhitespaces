@@ -11,7 +11,6 @@ Usage: Run the build process by running the command 'python setup.py build'
 """
 
 from setuptools import setup, find_packages
-from os.path import join, dirname
 
 
 CLASSIFIERS = """
@@ -27,7 +26,6 @@ META = {
     'url': 'https://github.com/dietmarw/trimtrailingwhitespaces',
     'version': '0.6.4-dev',
     'description': 'Script to remove trailing whitespaces from textfiles.',
-    'long_description': open(join(dirname(__file__), 'README.md')).read(),
     'classifiers': CLASSIFIERS,
     'license': 'UNLICENSE',
     'author': 'Dietmar Winkler',
