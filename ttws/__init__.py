@@ -50,9 +50,9 @@ def unknownOption(script_name, args):
     print(textwrap.dedent(warning))
 
 def unknownDirectory(args):
-    """Warning message for unknown Directory."""
+    """Warning message for unknown directory."""
     warning = """
-        WARNING: Ignoring unkown directory: "%s"
+        WARNING: Ignoring unknown directory: "%s"
         """ % (args)
     print(textwrap.dedent(warning))
 
