@@ -41,7 +41,7 @@ def usage(argv):
 			-h, --help
 				displays this help message
 		""" % (argv[0],)
-	print textwrap.dedent(message)
+	print(textwrap.dedent(message))
 
 # warning message for unkown options
 def unkownOption(argv):
@@ -51,7 +51,7 @@ def unkownOption(argv):
 
 		Use %s -h [--help] for usage instructions.
 		""" % (argv[1],argv[0],)
-	print textwrap.dedent(warning)
+	print(textwrap.dedent(warning))
 
 def main(argv):
 	import getopt
