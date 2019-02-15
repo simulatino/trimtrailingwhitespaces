@@ -23,10 +23,10 @@ You can find the latest stable releases under the
 [releases link](../../releases).
 
 ## Installation
- * System requirement: Python >= 2.6
+ * System requirement: Python >= 2.6 or Python 3.x
 
 Easiest way to install *ttws* is to use [pip](http://www.pip-installer.org).
-This will install (and update) *ttws* and also all its depenencies.
+This will install (and update) *ttws* and also all its dependencies.
 
 ### Linux/Mac
 
