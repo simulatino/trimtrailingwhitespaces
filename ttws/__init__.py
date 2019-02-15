@@ -169,6 +169,17 @@ def cleanAnnotation(filepath, eol):
                        + Keyword('0.1')
                        + ZeroOrMore(White(' \t')))
         out = Suppress(lastIniSRef).transformString(out)
+        # remove empty and superfluous Documentation annotation:
+        docRef = (ZeroOrMore(White(' \t'))
+                     + (Keyword('Documentation'))
+                     + ~nestedExpr() + ',' + ZeroOrMore(White(' \t')))
+        out = Suppress(docRef).transformString(out)
+        # special care of the last one again
+        lastDocRef = (Optional(',') + ZeroOrMore(White(' \t'))
+                         + (Keyword('Documentation'))
+                         + ~nestedExpr() + ZeroOrMore(White(' \t')))
+        out = Suppress(lastDocRef).transformString(out)
+
 
         # remove Icon and Diagram annotations that do not contain any graphics
         emptyRef =  ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ',' + ZeroOrMore(White(' \t') + lineEnd)
