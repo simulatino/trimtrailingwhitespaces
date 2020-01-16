@@ -26,7 +26,7 @@ import textwrap
 import io
 
 from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
-                       ZeroOrMore, Optional, ParseException,
+                       ZeroOrMore, Optional, ParseException, FollowedBy,
                        CaselessLiteral)
 
 
@@ -176,7 +176,7 @@ def cleanAnnotation(filepath, eol):
         out = Suppress(docRef).transformString(out)
         # special care of the last one again
         lastDocRef = (Optional(',') + ZeroOrMore(White(' \t'))
-                         + (Keyword('Documentation'))
+                         + (Keyword('Documentation')) + ~FollowedBy('/')
                          + ~nestedExpr() + ZeroOrMore(White(' \t')))
         out = Suppress(lastDocRef).transformString(out)
 
