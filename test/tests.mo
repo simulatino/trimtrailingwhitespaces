@@ -44,4 +44,3 @@ annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
 
 end LargeModel;
 
-

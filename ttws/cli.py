@@ -16,8 +16,8 @@ def main(args=None):
 
     # Look for optional arguments:
     try:
-        opts, dirnames = getopt.getopt(args, "hsc", ["help","strip","clean",
-                                                     "eol="])
+        opts, dirnames = getopt.getopt(args, "hvsbc", ["help","version","strip","blanks","clean",
+                                                      "eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unknownOption(args)
@@ -35,8 +35,14 @@ def main(args=None):
         if opt in ("-h","--help"):
             usage(args)
             sys.exit(0)
+        elif opt in ("-v","--version"):
+            os.system('pip show ttws')
+            sys.exit(0)
         elif opt in ("-c","--clean"):
             cleanOpt = True
+        elif opt in ("-b","--blanks"):
+            os.system('for fn in `find -name "*.mo"`; do cat -s $fn >$fn.1; mv $fn.1 $fn; done')
+            sys.exit(0)
         elif opt in ("-s","--strip"):
             stripOpt = True
         elif opt in ("--eol"):
@@ -78,16 +84,15 @@ def main(args=None):
                     else:
                         print("skipping file of type %s: %s" % (filetype, filepath))
 
-
 def usage(script_name):
     """Help message on usage."""
     message = """
         Usage: ttws [OPTIONS] <directory> [<directory> ...]
 
-         This script will recursively scan all text files in a given list of 
-         directories and remove all trailing white space in every line as well 
-         as multiple blank lines at the end of the file. Binary files and files 
-         residing in '.bzr', '.cvs', '.git', '.hg', '.svn' directories are 
+         This script will recursively scan all text files in a given list of
+         directories and remove all trailing white space in every line as well
+         as multiple blank lines at the end of the file. Binary files and files
+         residing in '.bzr', '.cvs', '.git', '.hg', '.svn' directories are
          skipped.
 
          Since the main application is for Modelica projects it expects all files
@@ -102,6 +107,9 @@ def usage(script_name):
         Options:
             -h, --help
                 displays this help message
+
+            -v, --version
+                displays version information
 
             -s, --strip
                 strips leading or trailing white spaces from info or
@@ -124,9 +132,12 @@ def usage(script_name):
                 Only use this if your code is under version control
                 and in combination with a careful code-diff review.
 
+            -b, --blanks
+                suppress repeated empty output lines from *.mo files
+                (This option should not be run in combination with others.)
+
         """ % (extstring, repr(os.linesep))
     print(textwrap.dedent(message))
-
 
 if __name__ == "__main__":
     sys.exit(main())

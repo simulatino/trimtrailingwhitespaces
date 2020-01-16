@@ -58,6 +58,9 @@ This will install (and update) *ttws* and also all its dependencies.
         -h, --help
             displays this help message
 
+        -v, --version
+                displays version information
+
         -s, --strip
             strips leading or trailing white spaces from info or
                 revision strings that contain HTML documentation
@@ -78,6 +81,9 @@ This will install (and update) *ttws* and also all its dependencies.
             Only use this if your code is under version control
             and in combination with a careful code-diff review.
 
+        -b, --blanks
+            suppress repeated empty output lines from *.mo files
+            (This option should not be run in combination with others.)
 
 ## License
 See [UNLICENSE](UNLICENSE) file
