@@ -177,7 +177,7 @@ def cleanAnnotation(filepath, eol):
         # special care of the last one again
         lastDocRef = (Optional(',') + ZeroOrMore(White(' \t'))
                          + (Keyword('Documentation')) + ~FollowedBy('/')
-                         + ~nestedExpr() + ZeroOrMore(White(' \t')))
+                         + ~nestedExpr() + FollowedBy(')'))
         out = Suppress(lastDocRef).transformString(out)
 
 

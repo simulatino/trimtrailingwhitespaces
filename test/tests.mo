@@ -44,6 +44,9 @@ annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
 
 // Empty Documentation should be removed:
 annotation (Documentation);
+annotation( Documentation );
+annotation( Documentation, );
+annotation( Documentation , );
 
 // Empty Documentation should be removed:
 annotation (Documentation(info="<html>
@@ -51,6 +54,13 @@ annotation (Documentation(info="<html>
 &quot;<a href=\"modelica://Modelica/Resources/Documentation/Mechanics/Lossy-Gear-Bug_Solution.pdf\">Problem
 with model LossyGear and a proposed solution</a>&quot;
 </p>
+</html>"));
+
+// Simple Documentation string should not be removed:
+annotation (Documentation(info="<html>
+<p>
+Some Documentation can be found here.
+Documentation at the start.</p>
 </html>"));
 
 end LargeModel;
