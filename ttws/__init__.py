@@ -38,7 +38,8 @@ extstring = ".mo,.mos,.c,.h,.cpp,.txt,.order"
 BLACKLIST = ['.bzr', '.cvs', '.git', '.hg', '.svn', '.#']
 
 # convert the string object to a list object
-listofexts  = extstring.split(",")
+listofexts = extstring.split(",")
+
 
 def unknownOption(script_name, args):
     """Warning message for unknown options."""
@@ -46,29 +47,31 @@ def unknownOption(script_name, args):
         UNKNOWN OPTION: "%s"
 
         Use %s -h [--help] for usage instructions.
-        """ % (args,script_name,)
+        """ % (args, script_name,)
     print(textwrap.dedent(warning))
+
 
 def unknownDirectory(args):
     """Warning message for unknown directory."""
     warning = """
         WARNING: Ignoring unknown directory: "%s"
-        """ % (args)
+        """ % args
     print(textwrap.dedent(warning))
+
 
 def detecttype(filepath):
     """Detect the mime type of the text file."""
     try:
         from magic import Magic
         mime = Magic(mime=True)
-        type = mime.from_file(filepath)
+        filetype = mime.from_file(filepath)
         root, ext = os.path.splitext(filepath)
         if ext in '.mo':
             return "mo"
-        elif "text/" in type:
+        elif "text/" in filetype:
             return "text"
         else:
-            return type
+            return filetype
     except (ImportError, TypeError):
         root, ext = os.path.splitext(filepath)
         if ext in '.mo':
@@ -78,6 +81,7 @@ def detecttype(filepath):
         else:
             return "unknown"
 
+
 def trimWhitespace(filepath, eol):
     """Trim trailing white spaces from a given filepath."""
     try:
@@ -86,26 +90,28 @@ def trimWhitespace(filepath, eol):
             while len(lines) > 1 and not lines[-1]:
                 lines.pop(-1)
         with io.open(filepath, "w", newline="") as target:
-            target.write(eol.join(lines) +eol)
+            target.write(eol.join(lines) + eol)
     except (UnicodeDecodeError, TypeError) as err:
         print("\nOops! Failing to process file: %s\n"
               "Are you sure it is of pure ASCII or UTF8 encoding?\n"
               "Message: %s\n") % (source.name, err)
         raise
 
+
 def flatten(arg):
-      ret = []
-      for item in arg:
-        if type(item)==list:
-          ret = ret + flatten(item)
-        elif type(item)==tuple:
-          ret = ret + flatten(list(item))
+    ret = []
+    for item in arg:
+        if type(item) == list:
+            ret = ret + flatten(item)
+        elif type(item) == tuple:
+            ret = ret + flatten(list(item))
         else:
-          ret.append(item)
-      return ret
+            ret.append(item)
+    return ret
+
 
 def skipNonEmptyGraphics(s, loc, tokens):
-    flattened =  flatten(tokens.args[0].asList())
+    flattened = flatten(tokens.args[0].asList())
     joinedFlattened = ''.join(flattened)
     graphicsPresent = False
     lastGraphics = 'graphics' in flattened[-1]
@@ -121,34 +127,37 @@ def skipNonEmptyGraphics(s, loc, tokens):
     if not removeGraphics:
         raise ParseException('graphics defined, skipping...')
 
+
 def cleanAnnotation(filepath, eol):
     """Clean out the obsolete or superfluous annotations."""
     with io.open(filepath, 'r') as mo_file:
         string = mo_file.read()
         # remove old Modelica 1 'Window(),' and 'Coordsys()' annotations:
-        WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ',' + ZeroOrMore(White(' \t') + lineEnd)
+        WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window') | Keyword('Coordsys')) + nestedExpr() \
+            + ',' + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(WindowRef).transformString(string)
         # special care needs to be taken if the annotation is the last one
-        WindowLastRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Window')|Keyword('Coordsys')) + nestedExpr() + ZeroOrMore(White(' \t') + lineEnd)
+        WindowLastRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Window') | Keyword('Coordsys')) \
+            + nestedExpr() + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(WindowLastRef).transformString(out)
 
         # remove empty and superfluous Dymola specific annotations:
         dymolaRef = (ZeroOrMore(White(' \t'))
-                     + ((Optional('__Dymola_') + 'experimentSetupOutput')|
+                     + ((Optional('__Dymola_') + 'experimentSetupOutput') |
                         Keyword('DymolaStoredErrors'))
                      + ~nestedExpr() + ',' + ZeroOrMore(White(' \t')))
         out = Suppress(dymolaRef).transformString(out)
         # special care of the last one again
         lastDymolaRef = (Optional(',') + ZeroOrMore(White(' \t'))
-                         + ((Optional('__Dymola_') + 'experimentSetupOutput')|
+                         + ((Optional('__Dymola_') + 'experimentSetupOutput') |
                             Keyword('DymolaStoredErrors'))
                          + ~nestedExpr() + ZeroOrMore(White(' \t')))
         out = Suppress(lastDymolaRef).transformString(out)
 
         # remove superfluous annotations with defaults
-        defaultRef = ((Keyword('rotation')|Keyword('visible')|Keyword('origin'))
+        defaultRef = ((Keyword('rotation') | Keyword('visible') | Keyword('origin'))
                       + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
-                      + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
+                      + (Keyword('0') | Keyword('true') | Keyword('{0,0}'))
                       + ',' + ZeroOrMore(White(' \t')))
         out = Suppress(defaultRef).transformString(out)
         # special rule for initial scale in order to avoid false positives
@@ -159,9 +168,9 @@ def cleanAnnotation(filepath, eol):
         out = Suppress(iniSRef).transformString(out)
         # special care for the last ones again
         lastDefaultRef = (Optional(',')
-                          + (Keyword('rotation')|Keyword('visible')|Keyword('origin'))
+                          + (Keyword('rotation') | Keyword('visible') | Keyword('origin'))
                           + ZeroOrMore(White(' \t')) + '=' + ZeroOrMore(White(' \t'))
-                          + (Keyword('0')|Keyword('true')|Keyword('{0,0}'))
+                          + (Keyword('0') | Keyword('true') | Keyword('{0,0}'))
                           + ZeroOrMore(White(' \t')))
         out = Suppress(lastDefaultRef).transformString(out)
         lastIniSRef = (Optional(',') + Keyword('initialScale')
@@ -170,31 +179,33 @@ def cleanAnnotation(filepath, eol):
                        + ZeroOrMore(White(' \t')))
         out = Suppress(lastIniSRef).transformString(out)
         # remove empty and superfluous Documentation annotation:
-        docRef = (ZeroOrMore(White(' \t'))
-                     + (Keyword('Documentation'))
-                     + ~nestedExpr() + ',' + ZeroOrMore(White(' \t')))
+        docRef = (ZeroOrMore(White(' \t')) + (Keyword('Documentation'))
+                  + ~nestedExpr() + ',' + ZeroOrMore(White(' \t')))
         out = Suppress(docRef).transformString(out)
         # special care of the last one again
         lastDocRef = (Optional(',') + ZeroOrMore(White(' \t'))
-                         + (Keyword('Documentation')) + ~FollowedBy('/')
-                         + ~nestedExpr() + FollowedBy(')'))
+                      + (Keyword('Documentation')) + ~FollowedBy('/')
+                      + ~nestedExpr() + FollowedBy(')'))
         out = Suppress(lastDocRef).transformString(out)
 
-
         # remove Icon and Diagram annotations that do not contain any graphics
-        emptyRef =  ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ',' + ZeroOrMore(White(' \t') + lineEnd)
+        emptyRef = ZeroOrMore(White(' \t')) + (Keyword('Icon') | Keyword('Diagram')) \
+            + nestedExpr()('args') + ',' + ZeroOrMore(White(' \t') + lineEnd)
         emptyRef.setParseAction(skipNonEmptyGraphics)
         out = Suppress(emptyRef).transformString(out)
         # special care for the last annotation again
-        lastEmptyRef =   Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Icon')|Keyword('Diagram')) + nestedExpr()('args') + ZeroOrMore(White(' \t') + lineEnd)
+        lastEmptyRef = Optional(',') + ZeroOrMore(White(' \t')) + (Keyword('Icon') | Keyword('Diagram'))\
+            + nestedExpr()('args') + ZeroOrMore(White(' \t') + lineEnd)
         lastEmptyRef.setParseAction(skipNonEmptyGraphics)
         out = Suppress(lastEmptyRef).transformString(out)
 
         # in case we end up with empty annotations remove them too
-        AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(',');',content=' ') + ZeroOrMore(White(' \t') + lineEnd)
+        AnnotationRef = ZeroOrMore(White(' \t')) + Keyword('annotation') + nestedExpr('(', ');', content=' ')\
+            + ZeroOrMore(White(' \t') + lineEnd)
         out = Suppress(AnnotationRef).transformString(out)
-    with io.open(filepath,'w', newline= eol) as mo_file:
+    with io.open(filepath, 'w', newline=eol) as mo_file:
         mo_file.write(out)
+
 
 def stripDocString(filepath, eol):
     """Strip spaces between string start/end and tag"""
@@ -209,7 +220,7 @@ def stripDocString(filepath, eol):
         # define a single expression to match either opener
         # or closer - have to add leaveWhitespace() call so that
         # we catch the leading whitespace in opener
-        either = opener|closer
+        either = opener | closer
         either.leaveWhitespace()
         out = either.transformString(string)
 

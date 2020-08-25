@@ -7,6 +7,7 @@ from . import (BLACKLIST, cleanAnnotation, extstring, detecttype,
                stripDocString, trimWhitespace, unknownDirectory,
                unknownOption)
 
+
 def main(args=None):
     if args is None:
         args = sys.argv
@@ -16,8 +17,8 @@ def main(args=None):
 
     # Look for optional arguments:
     try:
-        opts, dirnames = getopt.getopt(args, "hvsbc", ["help","version","strip","blanks","clean",
-                                                      "eol="])
+        opts, dirnames = getopt.getopt(args, "hvsbc", ["help", "version", "strip", "blanks", "clean",
+                                                       "eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unknownOption(args)
@@ -32,20 +33,20 @@ def main(args=None):
     stripOpt = False
     eol = os.linesep
     for opt, arg in opts:
-        if opt in ("-h","--help"):
+        if opt in ("-h", "--help"):
             usage(args)
             sys.exit(0)
-        elif opt in ("-v","--version"):
+        elif opt in ("-v", "--version"):
             os.system('pip show ttws')
             sys.exit(0)
-        elif opt in ("-c","--clean"):
+        elif opt in ("-c", "--clean"):
             cleanOpt = True
-        elif opt in ("-b","--blanks"):
+        elif opt in ("-b", "--blanks"):
             os.system('for fn in `find -name "*.mo"`; do cat -s $fn >$fn.1; mv $fn.1 $fn; done')
             sys.exit(0)
-        elif opt in ("-s","--strip"):
+        elif opt in ("-s", "--strip"):
             stripOpt = True
-        elif opt in ("--eol"):
+        elif opt in "--eol":
             eol = {
                 "CRLF": "\r\n",
                 "LF": "\n",
@@ -83,6 +84,7 @@ def main(args=None):
                         trimWhitespace(filepath, eol)
                     else:
                         print("skipping file of type %s: %s" % (filetype, filepath))
+
 
 def usage(script_name):
     """Help message on usage."""
@@ -138,6 +140,7 @@ def usage(script_name):
 
         """ % (extstring, repr(os.linesep))
     print(textwrap.dedent(message))
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -3,3 +3,5 @@
 build/
 dist/
 ttws.egg-info/
+
+.idea/
