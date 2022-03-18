@@ -1,8 +1,5 @@
 # Trimming of trailing white spaces.
 
-## Project page
-https://github.com/dietmarw/trimtrailingwhitespaces
-
 ## About
 This script will recursively remove all trailing white spaces in all
 text files in a given directory. Binary files and files residing in
