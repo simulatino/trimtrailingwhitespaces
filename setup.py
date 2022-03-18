@@ -23,8 +23,8 @@ Programming Language :: Python :: 3
 
 META = {
     'name': 'ttws',
-    'url': 'https://github.com/dietmarw/trimtrailingwhitespaces',
-    'version': '0.8.2',
+    'url': 'https://github.com/simulatino/trimtrailingwhitespaces',
+    'version': '0.8.3',
     'description': 'Script to remove trailing whitespaces from textfiles.',
     'classifiers': CLASSIFIERS,
     'license': 'UNLICENSE',
