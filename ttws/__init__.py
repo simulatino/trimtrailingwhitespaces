@@ -85,7 +85,7 @@ def detecttype(filepath):
 def trimWhitespace(filepath, eol):
     """Trim trailing white spaces from a given filepath."""
     try:
-        with io.open(filepath, "r") as source:
+        with io.open(filepath, "r", encoding='utf-8-sig') as source:
             lines = [line.rstrip() for line in source]
             while len(lines) > 1 and not lines[-1]:
                 lines.pop(-1)
@@ -130,7 +130,7 @@ def skipNonEmptyGraphics(s, loc, tokens):
 
 def cleanAnnotation(filepath, eol):
     """Clean out the obsolete or superfluous annotations."""
-    with io.open(filepath, 'r') as mo_file:
+    with io.open(filepath, 'r', encoding='utf-8-sig') as mo_file:
         string = mo_file.read()
         # remove old Modelica 1 'Window(),' and 'Coordsys()' annotations:
         WindowRef = ZeroOrMore(White(' \t')) + (Keyword('Window') | Keyword('Coordsys')) + nestedExpr() \
@@ -209,7 +209,7 @@ def cleanAnnotation(filepath, eol):
 
 def stripDocString(filepath, eol):
     """Strip spaces between string start/end and tag"""
-    with io.open(filepath, 'r') as mo_file:
+    with io.open(filepath, 'r', encoding='utf-8-sig') as mo_file:
         string = mo_file.read()
 
         # define expressions to match leading and trailing
