@@ -24,7 +24,7 @@ Programming Language :: Python :: 3
 META = {
     'name': 'ttws',
     'url': 'https://github.com/simulatino/trimtrailingwhitespaces',
-    'version': '0.8.4',
+    'version': '0.8.5',
     'description': 'Script to remove trailing whitespaces from textfiles and more.',
     'classifiers': CLASSIFIERS,
     'license': 'UNLICENSE',

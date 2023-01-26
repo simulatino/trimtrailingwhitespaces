@@ -17,8 +17,7 @@ def main(args=None):
 
     # Look for optional arguments:
     try:
-        opts, dirnames = getopt.getopt(args, "hvsbc", ["help", "version", "strip", "blanks", "clean",
-                                                       "eol="])
+        opts, dirnames = getopt.getopt(args, "hvsbcm", ["help", "version", "strip", "blanks", "clean", "multi", "eol="])
     # If unknown option is given trigger the display message:
     except getopt.GetoptError:
         unknownOption(args)
@@ -30,6 +29,7 @@ def main(args=None):
 
     # If help option is given display help otherwise display warning:
     cleanOpt = False
+    multiOpt = False
     stripOpt = False
     eol = os.linesep
     for opt, arg in opts:
@@ -41,6 +41,8 @@ def main(args=None):
             sys.exit(0)
         elif opt in ("-c", "--clean"):
             cleanOpt = True
+        elif opt in ("-m", "--multi"):
+            multiOpt = True
         elif opt in ("-b", "--blanks"):
             os.system('for fn in `find -name "*.mo"`; do cat -s $fn >$fn.1; mv $fn.1 $fn; done')
             sys.exit(0)
@@ -73,15 +75,15 @@ def main(args=None):
                     filetype = detecttype(filepath)
                     if filetype is "mo" and cleanOpt is True:
                         print("trimming and cleaning %s" % filepath)
-                        trimWhitespace(filepath, eol)
+                        trimWhitespace(filepath, multiOpt, eol)
                         cleanAnnotation(filepath, eol)
                     elif filetype is "mo" and stripOpt is True:
                         print("trimming and stripping %s" % filepath)
-                        trimWhitespace(filepath, eol)
+                        trimWhitespace(filepath, multiOpt, eol)
                         stripDocString(filepath, eol)
                     elif filetype is "mo" or filetype is "text":
                         print("trimming %s" % filepath)
-                        trimWhitespace(filepath, eol)
+                        trimWhitespace(filepath, multiOpt, eol)
                     else:
                         print("skipping file of type %s: %s" % (filetype, filepath))
 
@@ -133,6 +135,12 @@ def usage(script_name):
                 from Modelica files.
                 Only use this if your code is under version control
                 and in combination with a careful code-diff review.
+
+            -m, --multi
+                Replaces multiple inline whitespaces by one whitespace.
+                It ignores commented lines starting with '//'
+                CAREFUL: It will damage whitespace sensitive documentation
+                         like verbatim code snippets!
 
             -b, --blanks
                 suppress repeated empty output lines from *.mo files

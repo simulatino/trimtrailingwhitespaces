@@ -24,6 +24,7 @@ it acts only on files with a given file extension listed in 'extstring'.
 import os
 import textwrap
 import io
+import re
 
 from pyparsing import (White, Keyword, nestedExpr, lineEnd, Suppress,
                        ZeroOrMore, Optional, ParseException, FollowedBy,
@@ -82,15 +83,17 @@ def detecttype(filepath):
             return "unknown"
 
 
-def trimWhitespace(filepath, eol):
+def trimWhitespace(filepath, multiOpt, eol):
     """Trim trailing white spaces from a given filepath."""
     try:
-        with io.open(filepath, "r", encoding='utf-8-sig') as source:
-            lines = [line.rstrip() for line in source]
-            while len(lines) > 1 and not lines[-1]:
-                lines.pop(-1)
-        with io.open(filepath, "w", newline="") as target:
-            target.write(eol.join(lines) + eol)
+        with open(filepath, "r", encoding='utf-8-sig') as f:
+            lines = f.readlines()
+        with open(filepath, "w", newline=eol) as f:
+            for line in lines:
+                if multiOpt and not line.lstrip().startswith('//'):
+                    line = re.sub(r'(?<=\S)[\s]+', ' ', line)
+                f.write(line.rstrip() + eol)
+
     except (UnicodeDecodeError, TypeError) as err:
         print("\nOops! Failing to process file: %s\n"
               "Are you sure it is of pure ASCII or UTF8 encoding?\n"
